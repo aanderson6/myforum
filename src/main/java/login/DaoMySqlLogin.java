@@ -72,13 +72,14 @@ public class DaoMySqlLogin implements DaoInterfaceLogin {
     ///// ACCESS DATABASE /////
     try {
       openConnection();
-      String query = "INSERT INTO Users (username, shpw, displayname, email, joindate, karma, islocked) VALUES (?, ?, ?, ?, NOW(), 0, ?);";
+      String query = "INSERT INTO Users (username, shpw, displayname, email, joindate, karma, islocked) VALUES (?, ?, ?, ?, ?, 0, ?);";
       stmt = con.prepareStatement(query);
       stmt.setString(1, username);
       stmt.setString(2, shpw);
       stmt.setString(3, displayName);
       stmt.setString(4, email);
-      stmt.setTimestamp(5, Timestamp.from(Instant.now().minus(5, ChronoUnit.MINUTES)));
+			stmt.setTimestamp(5, Timestamp.from(inputUser.getJoinDate()));
+      stmt.setTimestamp(6, Timestamp.from(Instant.now().minus(5, ChronoUnit.MINUTES)));
       stmt.execute();
     }
     catch (SQLException|NamingException ex) {
@@ -379,10 +380,11 @@ public class DaoMySqlLogin implements DaoInterfaceLogin {
     ///// CREATE RECORD IN DB /////
     try {
       openConnection();
-      String query = "INSERT INTO LoginAttempts (uid, logintime, succeeded) VALUES (?, NOW(), ?);";
+      String query = "INSERT INTO LoginAttempts (uid, logintime, succeeded) VALUES (?, ?, ?);";
       stmt = con.prepareStatement(query);
       stmt.setInt(1, uid);
-      stmt.setBoolean(2, succeeded);
+			stmt.setTimestamp(2, Timestamp.from(lam.getAttemptDate()));
+      stmt.setBoolean(3, succeeded);
       stmt.execute();
     }
     catch (SQLException|NamingException ex) {

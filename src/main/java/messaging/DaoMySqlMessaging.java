@@ -59,9 +59,11 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
     ///// ACCESS DATABASE /////
     try {
       openConnection();
-      String query = "INSERT INTO Conversations (from_uid, started, most_recent) VALUES (?, NOW(), NOW());";
-      stmt = con.prepareStatement(query);
+      String query = "INSERT INTO Conversations (from_uid, started, most_recent) VALUES (?, ?, ?);";
+      stmt = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
       stmt.setInt(1, conversation.getUid());
+			stmt.setTimestamp(2, Timestamp.from(conversation.getStarted()));
+			stmt.setTimestamp(3, Timestamp.from(conversation.getRecent()));
       stmt.execute();
       rs = stmt.getGeneratedKeys();
       rs.next();
@@ -76,7 +78,7 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
 
     ///// RETURN Created /////
 
-    conversation = getConversationByCID(auto_id);
+    conversation = getConversationByCid(auto_id);
     return conversation;
 
   }
@@ -95,7 +97,7 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
     try {
       openConnection();
       String query = "INSERT INTO Messages (conversation_id, from_uid, sent, subject, content, chain_num) VALUES (?, ?, ?, ?, ?, ?)";
-      stmt = con.prepareStatement(query);
+      stmt = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
       stmt.setInt(1, message.getCid());
       stmt.setInt(2, message.getFromUid());
       stmt.setTimestamp(3, Timestamp.from(message.getSent()));
@@ -126,10 +128,11 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
     ///// ACCESS DATABASE /////
     try {
       openConnection();
-      String query = "INSERT INTO Membership (conversation_id, uid, unread_chain_num, visible) VALUES (?, ?, 1, TRUE)";
-      stmt = con.prepareStatement(query);
+      String query = "INSERT INTO Membership (conversation_id, uid, unread_chain_num, visible) VALUES (?, ?, ?, TRUE)";
+      stmt = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
       stmt.setInt(1, membership.getCid());
       stmt.setInt(2, membership.getUid());
+			stmt.setInt(3, membership.getUnreadChainNum());
       stmt.execute();
       rs = stmt.getGeneratedKeys();
       rs.next();
@@ -144,7 +147,7 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
 
     ///// RETURN Created /////
 
-    membership = getMembershipByGid(auto_id);
+    membership = getMembershipByMid(auto_id);
     return membership;
   }
 
@@ -154,7 +157,7 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
     try {
       openConnection();
       String query = "INSERT INTO Filters (uid, managed_uid, block_allow) VALUES (?, ?, ?)";
-      stmt = con.prepareStatement(query);
+      stmt = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
       stmt.setInt(1, filter.getUid());
       stmt.setInt(2, filter.getManagedUid());
       stmt.setBoolean(3, filter.getBlockAllow());
@@ -182,7 +185,7 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
     try {
       openConnection();
       String query = "INSERT INTO Settings (uid, collapse_read_messages, all_or_whitelist, notify_messages, open_mark_read) VALUES (?, ?, ?, ?, ?)";
-      stmt = con.prepareStatement(query);
+      stmt = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
       stmt.setInt(1, settings.getUid());
       stmt.setBoolean(2, settings.getCollapseReadMessages());
       stmt.setBoolean(3, settings.getAllOrWhitelist());
@@ -214,7 +217,7 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
     try {
       openConnection();
       String query = "INSERT INTO Notifications (uid, id_num, id_num_type) VALUES (?, ?, ?)";
-      stmt = con.prepareStatement(query);
+      stmt = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
       stmt.setInt(1, notification.getUid());
       stmt.setInt(2, notification.getIdNum());
       stmt.setString(3, notification.getIdNumType());
@@ -238,11 +241,11 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
 
   ///// DELETES /////
 
-  public void deleteFilterByFID(int fid) throws SQLException, NamingException {
+  public void deleteFilterByFid(int fid) throws SQLException, NamingException {
     ///// DELETE RECORD FROM DB /////
     try {
       openConnection();
-      String query = "DELETE FROM Filters WHERE fid = ?;";
+      String query = "DELETE FROM Filters WHERE filter_id = ?;";
       stmt = con.prepareStatement(query);
       stmt.setInt(1, fid);
       stmt.execute();
@@ -255,7 +258,7 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
     }
   }
 
-  public void deleteFilterByUID(int uid) throws SQLException, NamingException {
+  public void deleteFilterByUid(int uid) throws SQLException, NamingException {
     ///// DELETE RECORD FROM DB /////
     try {
       openConnection();
@@ -271,7 +274,7 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
       closeConnection();
     }
   }
-
+/*
   public void deleteFilterByUidMidBa(int uid, int managed_uid, Boolean ba) throws SQLException, NamingException {
     ///// DELETE RECORD FROM DB /////
     try {
@@ -290,12 +293,12 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
       closeConnection();
     }
   }
-
+*/
   public void deleteNotificationByNid(int nid) throws SQLException, NamingException {
     ///// DELETE RECORD FROM DB /////
     try {
       openConnection();
-      String query = "DELETE FROM Notifications WHERE nid = ?;";
+      String query = "DELETE FROM Notifications WHERE notification_id = ?;";
       stmt = con.prepareStatement(query);
       stmt.setInt(1, nid);
       stmt.execute();
@@ -325,7 +328,7 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
     }
   }
 
-  public void deleteSettingsByUID(int uid) throws SQLException, NamingException {
+  public void deleteSettingsByUid(int uid) throws SQLException, NamingException {
     ///// DELETE RECORD FROM DB /////
     try {
       openConnection();
@@ -342,7 +345,7 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
     }
   }
 
-  public void deleteMembershipByUID(int uid) throws SQLException, NamingException {
+  public void deleteMembershipByUid(int uid) throws SQLException, NamingException {
     ///// DELETE RECORD FROM DB /////
     try {
       openConnection();
@@ -365,7 +368,7 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
     ///// UPDATE RECORD IN DB /////
     try {
       openConnection();
-      String query = "UPDATE Memberships SET conversation_id = ?, uid = ?, unread_chain_num = ?, visible = ? WHERE membership_id = ?;";
+      String query = "UPDATE Membership SET conversation_id = ?, uid = ?, unread_chain_num = ?, visible = ? WHERE membership_id = ?;";
       stmt = con.prepareStatement(query);
       stmt.setInt(1, membership.getCid());
       stmt.setInt(2, membership.getUid());
@@ -457,19 +460,19 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
 
   ///// READS /////
 
-  public MembershipDTO getMembershipByGid(int gid) throws SQLException, NamingException {
+  public MembershipDTO getMembershipByMid(int mid) throws SQLException, NamingException {
     MembershipDTO membership = new MembershipDTO();
-    membership.setMid(gid);
 
     try {
       openConnection();
       String query = "SELECT * FROM Membership WHERE membership_id = ?;";
       stmt = con.prepareStatement(query);
-      stmt.setInt(1, gid);
+      stmt.setInt(1, mid);
       rs = stmt.executeQuery();
       if (rs.isBeforeFirst() && rs.getRow() == 0) {
         while (rs.next()) {
-          membership.setCid(rs.getInt("conversation_id"));
+      		membership.setMid(mid);
+					membership.setCid(rs.getInt("conversation_id"));
           membership.setUid(rs.getInt("uid"));
           membership.setUnreadChainNum(rs.getInt("unread_chain_num"));
           membership.setVisible(rs.getBoolean("visible"));
@@ -524,7 +527,7 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
     ///// ACCESS DATABASE /////
     try {
       openConnection();
-      String query = "SELECT * FROM Membership WHERE uid = ? ORDER BY cid LIMIT ?, ?;";
+      String query = "SELECT * FROM Membership WHERE uid = ? ORDER BY conversation_id LIMIT ?, ?;";
       stmt = con.prepareStatement(query);
       stmt.setInt(1, uid);
       stmt.setInt(2, start);
@@ -553,9 +556,8 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
 
   }
 
-  public ConversationDTO getConversationByCID(int cid) throws SQLException, NamingException {
+  public ConversationDTO getConversationByCid(int cid) throws SQLException, NamingException {
     ConversationDTO conversation = new ConversationDTO();
-    conversation.setCid(cid);
 
     try {
       openConnection();
@@ -565,7 +567,8 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
       rs = stmt.executeQuery();
       if (rs.isBeforeFirst() && rs.getRow() == 0) {
         while (rs.next()) {
-          conversation.setUid(rs.getInt("from_uid"));
+					conversation.setCid(cid);
+					conversation.setUid(rs.getInt("from_uid"));
           conversation.setStarted(rs.getTimestamp("started").toInstant());
           conversation.setRecent(rs.getTimestamp("most_recent").toInstant());
         }
@@ -583,7 +586,6 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
 
   public MessageDTO getMessageByMid(int mid) throws SQLException, NamingException {
     MessageDTO message = new MessageDTO();
-    message.setMid(mid);
 
     try {
       openConnection();
@@ -593,7 +595,8 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
       rs = stmt.executeQuery();
       if (rs.isBeforeFirst() && rs.getRow() == 0) {
         while (rs.next()) {
-          message.setCid(rs.getInt("conversation_id"));
+      		message.setMid(mid);
+					message.setCid(rs.getInt("conversation_id"));
           message.setFromUid(rs.getInt("from_uid"));
           message.setSent(rs.getTimestamp("sent").toInstant());
           message.setSubject(rs.getString("subject"));
@@ -612,7 +615,7 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
     return message;
   }
 
-  public List<MessageDTO> getMessagesByCID(int cid) throws SQLException, NamingException {
+  public List<MessageDTO> getMessagesByCid(int cid) throws SQLException, NamingException {
     List<MessageDTO> messageList = new ArrayList<MessageDTO>();
 
     ///// ACCESS DATABASE /////
@@ -625,9 +628,9 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
       if (rs.isBeforeFirst() && rs.getRow() == 0) {
         while (rs.next()) {
           MessageDTO message = new MessageDTO();
-          message.setMid(rs.getInt("membership_id"));
+          message.setMid(rs.getInt("message_id"));
           message.setCid(rs.getInt("conversation_id"));
-          message.setFromUid(rs.getInt("uid"));
+          message.setFromUid(rs.getInt("from_uid"));
           message.setSent(rs.getTimestamp("sent").toInstant());
           message.setSubject(rs.getString("subject"));
           message.setContent(rs.getString("content"));
@@ -649,7 +652,6 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
 
   public FilterDTO getFilterByFid(int fid) throws SQLException, NamingException {
     FilterDTO filter = new FilterDTO();
-    filter.setFid(fid);
 
     try {
       openConnection();
@@ -659,7 +661,8 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
       rs = stmt.executeQuery();
       if (rs.isBeforeFirst() && rs.getRow() == 0) {
         while (rs.next()) {
-          filter.setUid(rs.getInt("uid"));
+    			filter.setFid(fid);
+					filter.setUid(rs.getInt("uid"));
           filter.setManagedUid(rs.getInt("managed_uid"));
           filter.setBlockAllow(rs.getBoolean("block_allow"));
         }
@@ -677,7 +680,6 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
 
   public SettingsDTO getSettingsBySid(int sid) throws SQLException, NamingException {
     SettingsDTO settings = new SettingsDTO();
-    settings.setSid(sid);
 
     try {
       openConnection();
@@ -687,7 +689,8 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
       rs = stmt.executeQuery();
       if (rs.isBeforeFirst() && rs.getRow() == 0) {
         while (rs.next()) {
-          settings.setUid(rs.getInt("uid"));
+      		settings.setSid(sid);
+					settings.setUid(rs.getInt("uid"));
           settings.setCollapseReadMessages(rs.getBoolean("collapse_read_messages"));
           settings.setAllOrWhitelist(rs.getBoolean("all_or_whitelist"));
           settings.setUnreadNotify(rs.getBoolean("notify_messages"));
@@ -705,9 +708,8 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
     return settings;
   }
 
-  public SettingsDTO getSettingsByUID(int uid) throws SQLException, NamingException {
+  public SettingsDTO getSettingsByUid(int uid) throws SQLException, NamingException {
     SettingsDTO settings = new SettingsDTO();
-    settings.setUid(uid);
 
     try {
       openConnection();
@@ -717,7 +719,8 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
       rs = stmt.executeQuery();
       if (rs.isBeforeFirst() && rs.getRow() == 0) {
         while (rs.next()) {
-          settings.setSid(rs.getInt("settings_id"));
+      		settings.setUid(uid);
+					settings.setSid(rs.getInt("settings_id"));
           settings.setCollapseReadMessages(rs.getBoolean("collapse_read_messages"));
           settings.setAllOrWhitelist(rs.getBoolean("all_or_whitelist"));
           settings.setUnreadNotify(rs.getBoolean("notify_messages"));
@@ -737,7 +740,6 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
 
   public NotificationDTO getNotificationByNid(int nid) throws SQLException, NamingException {
     NotificationDTO notification = new NotificationDTO();
-    notification.setNid(nid);
 
     try {
       openConnection();
@@ -747,7 +749,8 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
       rs = stmt.executeQuery();
       if (rs.isBeforeFirst() && rs.getRow() == 0) {
         while (rs.next()) {
-          notification.setUid(rs.getInt("uid"));
+      		notification.setNid(nid);
+					notification.setUid(rs.getInt("uid"));
           notification.setIdNum(rs.getInt("id_num"));
           notification.setIdNumType(rs.getString("id_num_type"));
         }
@@ -763,7 +766,7 @@ public class DaoMySqlMessaging implements DaoInterfaceMessaging {
     return notification;
   }
 
-  public List<NotificationDTO> getNotificationsByUID(int uid) throws SQLException, NamingException {
+  public List<NotificationDTO> getNotificationsByUid(int uid) throws SQLException, NamingException {
     List<NotificationDTO> notificationList = new ArrayList<NotificationDTO>();
 
     ///// ACCESS DATABASE /////
