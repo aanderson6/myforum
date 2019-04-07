@@ -28,12 +28,16 @@ import java.io.StringWriter;
 public class tester extends HttpServlet {
 
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    /*response.setContentType("text/html");
+    response.setContentType("text/html");
     PrintWriter out = response.getWriter();
     out.write("<html><body>HELLO! <br>");
     out.write("testing13<br><br><br>");
      
-    
+		throw new RuntimeException(new IOException());
+
+
+
+   /* 
 		try {
 
 			DaoInterfaceMessaging testMessagingDAO = new DaoMySqlMessaging();
@@ -344,7 +348,6 @@ public class tester extends HttpServlet {
 			out.write(sw.toString());
     }
     
-
-    out.write("FINISHED!");*/
+*/
   }
 }
