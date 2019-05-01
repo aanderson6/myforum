@@ -7,7 +7,7 @@
 
   <servlet>
     <servlet-name>tester</servlet-name>
-    <servlet-class>com.myforum.messaging.tester</servlet-class>
+    <servlet-class>com.myforum.tester</servlet-class>
   </servlet>
 
   <servlet-mapping>
