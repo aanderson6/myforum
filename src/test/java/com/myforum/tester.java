@@ -1,4 +1,4 @@
-package com.myforum;
+/*package com.myforum;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +20,7 @@ import com.myforum.posts.repositories.*;
 
 import com.myforum.comments.entities.*;
 import com.myforum.comments.repositories.*; */
-
+/*
 import com.myforum.login.dtos.*;
 import com.myforum.messaging.dtos.*;
 import com.myforum.subforum.dtos.*;
@@ -48,7 +48,7 @@ public class tester extends HttpServlet {
     SubforumInterface subforumService = new SubforumService();
     PostInterface postService = new PostService();
     CommentInterface commentService = new CommentService();
-
+*/
     // next, test comment service...
     /*
     int commentId = commentService.createComment("username1", "subforum1", "testpost", "this is my post!");
@@ -90,7 +90,7 @@ public class tester extends HttpServlet {
   //  public int getCountChildrenOf(int commentId, String requestingUsername) throws IllegalArgumentException;
 
     // need to rewrite these to work with comment get methods instead of post methods
-
+/*
     int commentCount = commentService.getCountBySubforumFiltered("subforum1", "username2");
     List<CommentDTO> commentList = commentService.getBySubforumOrderedPaginated("subforum1", 0, postCount, "username2");
     int commentCount2 = commentService.getCountByUser("username1");
@@ -114,7 +114,7 @@ public class tester extends HttpServlet {
 
 
 
-
+*/
 
 
 
@@ -716,6 +716,7 @@ public class tester extends HttpServlet {
     postKarmaRepo.update(postKarma1);
     commentRepo.update(comment1);
     commentKarmaRepo.update(commentKarma1);
-    */
+
   }
 }
+*/

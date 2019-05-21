@@ -6,13 +6,21 @@
   version="4.0">
 
   <servlet>
-    <servlet-name>tester</servlet-name>
-    <servlet-class>com.myforum.tester</servlet-class>
+    <servlet-name>REST Services</servlet-name>
+    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>com.sun.jersey.config.property.packages</param-name>
+      <param-value>com.myforum.rest</param-value>
+    </init-param>
+    <init-param>
+  		<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+  		<param-value>true</param-value>
+  	</init-param>
+    <load-on-startup>1</load-on-startup>
   </servlet>
-
   <servlet-mapping>
-    <servlet-name>tester</servlet-name>
-    <url-pattern>/</url-pattern>
+    <servlet-name>REST Services</servlet-name>
+    <url-pattern>/rest/*</url-pattern>
   </servlet-mapping>
 
   <resource-ref>

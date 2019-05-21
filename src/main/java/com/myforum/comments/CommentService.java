@@ -18,9 +18,14 @@ import com.myforum.messaging.repositories.FilterRepo;
 import com.myforum.messaging.entities.SettingsEntity;
 import com.myforum.messaging.repositories.SettingsRepo;
 
+import com.myforum.messaging.entities.NotificationEntity;
+import com.myforum.messaging.repositories.NotificationRepo;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.time.Instant;
+
+import com.myforum.util.Validator;
 
 public class CommentService implements CommentInterface {
 
@@ -33,6 +38,7 @@ public class CommentService implements CommentInterface {
   CommentKarmaRepo commentKarmaRepo = new CommentKarmaRepo();
   FilterRepo filterRepo = new FilterRepo();
   SettingsRepo settingsRepo = new SettingsRepo();
+  NotificationRepo notificationRepo = new NotificationRepo();
 
 // parentCommentId == null if this is a top level comment in post
   public int createComment(String username, int postId, String subforumName, String content, Integer parentCommentId) throws IllegalArgumentException {
@@ -41,22 +47,26 @@ public class CommentService implements CommentInterface {
       throw new NullPointerException();
     }
 
+    if(!Validator.validateContent(content)) {
+      throw new IllegalArgumentException("Invalid Content");
+    }
+
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     SubforumEntity subforum = subforumRepo.getByName(subforumName);
 
     if(subforum == null) {
-      throw new IllegalArgumentException("No such subforum");
+      throw new IllegalArgumentException("No Such Subforum");
     }
 
     PostEntity post = postRepo.getById(postId);
 
     if(post == null) {
-      throw new IllegalArgumentException("No such post");
+      throw new IllegalArgumentException("No Such Post");
     }
 
     CommentEntity parentComment;
@@ -79,8 +89,28 @@ public class CommentService implements CommentInterface {
 
     upvoteComment(comment.getId(), user.getUsername());
 
+    notificationRepo.add(new NotificationEntity(user, comment.getId(), "Comment"));
+
     return comment.getId();
 
+  }
+
+  public void hasReadComment(int id, String username) throws IllegalArgumentException {
+    if (username == null) {
+      throw new NullPointerException();
+    }
+
+    UserEntity user = userRepo.getByUsername(username);
+
+    if(user == null) {
+      throw new IllegalArgumentException("No Such User");
+    }
+
+    NotificationEntity notification = notificationRepo.getByUserAndIdNum(user, id);
+
+    if(!(notification == null)) {
+      notificationRepo.remove(notification);
+    }
   }
 
   public void updateCommentContent(int id, String content, String username) throws IllegalArgumentException, IllegalStateException {
@@ -89,12 +119,16 @@ public class CommentService implements CommentInterface {
       throw new NullPointerException();
     }
 
+    if(!Validator.validateContent(content)) {
+      throw new IllegalArgumentException("Invalid Content");
+    }
+
     CommentEntity comment = commentRepo.getById(id);
     if(comment == null) {
-      throw new IllegalArgumentException("No such comment");
+      throw new IllegalArgumentException("No Such Comment");
     }
     if(!comment.getUser().getUsername().equals(username)) {
-      throw new IllegalStateException("Not Authorized to update comment");
+      throw new IllegalStateException("Not Authorized to Update");
     }
 
     comment.setContent(content);
@@ -110,11 +144,11 @@ public class CommentService implements CommentInterface {
 
     CommentEntity comment = commentRepo.getById(id);
     if(comment == null) {
-      throw new IllegalArgumentException("No such comment");
+      throw new IllegalArgumentException("No Such Comment");
     }
     UserEntity user = userRepo.getByUsername(username);
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     if(commentKarmaRepo.hasVoted(user, comment)) {
@@ -157,11 +191,11 @@ public class CommentService implements CommentInterface {
 
     CommentEntity comment = commentRepo.getById(id);
     if(comment == null) {
-      throw new IllegalArgumentException("No such comment");
+      throw new IllegalArgumentException("No Such Comment");
     }
     UserEntity user = userRepo.getByUsername(username);
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     if(commentKarmaRepo.hasVoted(user, comment)) {
@@ -204,11 +238,11 @@ public class CommentService implements CommentInterface {
 
     CommentEntity comment = commentRepo.getById(id);
     if(comment == null) {
-      throw new IllegalArgumentException("No such comment");
+      throw new IllegalArgumentException("No Such Comment");
     }
     UserEntity user = userRepo.getByUsername(username);
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     if(commentKarmaRepo.hasVoted(user, comment)) {
@@ -249,15 +283,15 @@ public class CommentService implements CommentInterface {
 
     CommentEntity comment = commentRepo.getById(id);
     if(comment == null) {
-      throw new IllegalArgumentException("No such comment");
+      throw new IllegalArgumentException("No Such Comment");
     }
     UserEntity user = userRepo.getByUsername(username);
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     if(!comment.getUser().getUsername().equals(username)) {
-      throw new IllegalStateException("Not Authorized to Delete comment");
+      throw new IllegalStateException("Not Authorized to Delete");
     }
 
     List<CommentKarmaEntity> commentKarmaList = commentKarmaRepo.getByComment(comment);
@@ -280,7 +314,7 @@ public class CommentService implements CommentInterface {
 
     CommentEntity commentEnt = commentRepo.getById(id);
     if(commentEnt == null) {
-      throw new IllegalArgumentException("No such comment");
+      throw new IllegalArgumentException("No Such Comment");
     }
 
     String commentUser = "[deleted]";
@@ -309,7 +343,7 @@ public class CommentService implements CommentInterface {
 
     UserEntity user = userRepo.getByUsername(username);
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     List<CommentEntity> commentEntList = new ArrayList<>();
@@ -355,7 +389,7 @@ public class CommentService implements CommentInterface {
     if(requestingUsername != null) {
       UserEntity user = userRepo.getByUsername(requestingUsername);
       if(user == null) {
-        throw new IllegalArgumentException("No such user");
+        throw new IllegalArgumentException("No Such User");
       }
       SettingsEntity settings = settingsRepo.getByUser(user);
 
@@ -459,7 +493,7 @@ public class CommentService implements CommentInterface {
     if(requestingUsername != null) {
       UserEntity user = userRepo.getByUsername(requestingUsername);
       if(user == null) {
-        throw new IllegalArgumentException("No such user");
+        throw new IllegalArgumentException("No Such User");
       }
       SettingsEntity settings = settingsRepo.getByUser(user);
 
@@ -563,7 +597,7 @@ public class CommentService implements CommentInterface {
 
     UserEntity user = userRepo.getByUsername(username);
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     int count = commentRepo.getCountByUser(user);
@@ -579,7 +613,7 @@ public class CommentService implements CommentInterface {
     if(requestingUsername != null) {
       UserEntity user = userRepo.getByUsername(requestingUsername);
       if(user == null) {
-        throw new IllegalArgumentException("No such user");
+        throw new IllegalArgumentException("No Such User");
       }
       SettingsEntity settings = settingsRepo.getByUser(user);
 
@@ -621,7 +655,7 @@ public class CommentService implements CommentInterface {
     if(requestingUsername != null) {
       UserEntity user = userRepo.getByUsername(requestingUsername);
       if(user == null) {
-        throw new IllegalArgumentException("No such user");
+        throw new IllegalArgumentException("No Such User");
       }
       SettingsEntity settings = settingsRepo.getByUser(user);
 

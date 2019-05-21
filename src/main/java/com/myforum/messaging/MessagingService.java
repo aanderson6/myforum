@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.time.Instant;
 
+import com.myforum.util.Validator;
+
 public class MessagingService implements MessagingInterface {
 
   private UserRepo userRepo = new UserRepo();
@@ -26,17 +28,23 @@ public class MessagingService implements MessagingInterface {
       throw new NullPointerException();
     }
 
+    if (!Validator.validateSubject(subject)) {
+      throw new IllegalArgumentException("Invalid Subject");
+    } else if (!Validator.validateContent(content)) {
+      throw new IllegalArgumentException("Invalid Content");
+    }
+
     UserEntity fromUserEntity = userRepo.getByUsername(fromUsername);
     if(fromUserEntity == null) {
-      throw new IllegalArgumentException("No such from user");
+      throw new IllegalArgumentException("No Such From User");
     }
     List<UserEntity> toUserEntityList = new ArrayList<UserEntity>();
 
     for(String toUsername : toUsernameList) {
       UserEntity tempUserEntity = userRepo.getByUsername(toUsername);
       if(tempUserEntity == null) {
-      throw new IllegalArgumentException("No such to user: " + toUsername);
-    }
+        throw new IllegalArgumentException("No Such To User: " + toUsername);
+      }
       toUserEntityList.add(tempUserEntity);
     }
 
@@ -56,13 +64,19 @@ public class MessagingService implements MessagingInterface {
       throw new NullPointerException();
     }
 
+    if (!Validator.validateSubject(subject)) {
+      throw new IllegalArgumentException("Invalid Subject");
+    } else if (!Validator.validateContent(content)) {
+      throw new IllegalArgumentException("Invalid Content");
+    }
+
     UserEntity fromUserEntity = userRepo.getByUsername(fromUsername);
     if(fromUserEntity == null) {
-      throw new IllegalArgumentException("No such from user");
+      throw new IllegalArgumentException("No Such From User");
     }
     ConversationEntity conversation = conversationRepo.getById(conversationID);
     if(conversation == null) {
-      throw new IllegalArgumentException("No such conversation");
+      throw new IllegalArgumentException("No Such Conversation");
     }
 
     conversation.setMostRecent(Instant.now());
@@ -78,7 +92,7 @@ public class MessagingService implements MessagingInterface {
     }
 
     if(!isMember) {
-      throw new IllegalArgumentException("User not member of conversation");
+      throw new IllegalArgumentException("User Not Conversation Member");
     }
 
 
@@ -106,7 +120,7 @@ public class MessagingService implements MessagingInterface {
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     SettingsEntity settings = settingsRepo.getByUser(user);
@@ -192,19 +206,19 @@ public class MessagingService implements MessagingInterface {
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     ConversationEntity conversation = conversationRepo.getById(conversationId);
 
     if(conversation == null) {
-      throw new IllegalArgumentException("No such conversation");
+      throw new IllegalArgumentException("No Such Conversation");
     }
 
     MembershipEntity membership = membershipRepo.getByUserAndConversation(user, conversation);
 
     if(membership == null) {
-      throw new IllegalArgumentException("User not member of conversation");
+      throw new IllegalArgumentException("User Not Conversation Member");
     }
 
     membership.setVisible(false);
@@ -221,7 +235,7 @@ public class MessagingService implements MessagingInterface {
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     NotificationEntity notification = notificationRepo.getByUserAndIdNum(user, messageId);
@@ -233,13 +247,13 @@ public class MessagingService implements MessagingInterface {
     MessageEntity message = messageRepo.getById(messageId);
 
     if(message == null) {
-      throw new IllegalArgumentException("No such message");
+      throw new IllegalArgumentException("No Such Message");
     }
 
     MembershipEntity membership = membershipRepo.getByUserAndConversation(user, message.getConversation());
 
     if(membership == null) {
-      throw new IllegalArgumentException("User not member of conversation");
+      throw new IllegalArgumentException("User Not Conversation Member");
     }
 
     membership.setUnreadChainNum(message.getChainNum() + 1);
@@ -256,7 +270,7 @@ public class MessagingService implements MessagingInterface {
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     SettingsEntity settings = settingsRepo.getByUser(user);
@@ -277,13 +291,13 @@ public class MessagingService implements MessagingInterface {
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     UserEntity managedUser = userRepo.getByUsername(managedUsername);
 
     if(managedUser == null) {
-      throw new IllegalArgumentException("No such managed user");
+      throw new IllegalArgumentException("No Such Managed User");
     }
 
     filterRepo.add(new FilterEntity(user, managedUser, blockAllow));
@@ -299,13 +313,13 @@ public class MessagingService implements MessagingInterface {
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     UserEntity managedUser = userRepo.getByUsername(managedUsername);
 
     if(managedUser == null) {
-      throw new IllegalArgumentException("No such managed user");
+      throw new IllegalArgumentException("No Such Managed User");
     }
 
     filterRepo.removeByUserManagedUserStatus(user, managedUser, blockAllow);
@@ -321,7 +335,7 @@ public class MessagingService implements MessagingInterface {
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     SettingsEntity settings = settingsRepo.getByUser(user);
@@ -339,7 +353,7 @@ public class MessagingService implements MessagingInterface {
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     List<FilterEntity> filterEntList = filterRepo.getByUser(user);
@@ -363,7 +377,7 @@ public class MessagingService implements MessagingInterface {
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     List<NotificationEntity> notificationEntList = notificationRepo.getByUser(user);
@@ -387,7 +401,7 @@ public class MessagingService implements MessagingInterface {
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     SettingsEntity settings = settingsRepo.getByUser(user);

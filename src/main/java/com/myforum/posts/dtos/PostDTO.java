@@ -6,7 +6,8 @@ public class PostDTO {
 
     public PostDTO() {    }
 
-    public PostDTO(Instant postedDate, String username, String subforumName, int karma, String title, String content) {
+    public PostDTO(int id, Instant postedDate, String username, String subforumName, int karma, String title, String content) {
+      this.id = id;
       this.postedDate = postedDate;
       this.username = username;
       this.subforumName = subforumName;
@@ -15,6 +16,7 @@ public class PostDTO {
       this.content = content;
     }
 
+    private int id;
     private Instant postedDate;
     private String username;
     private String subforumName;
@@ -22,6 +24,13 @@ public class PostDTO {
     private String title;
     private String content;
 
+    public int getId() {
+      return id;
+    }
+
+    public void setId(int id) {
+      this.id = id;
+    }
     public Instant getPostedDate() {
         return postedDate;
     }

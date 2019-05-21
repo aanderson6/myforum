@@ -1,0 +1,816 @@
+FOLLOWING ARE ALL AVAILABLE REST API METHODS ON THE SERVER, THEIR PARAMETERS (ALL POST FORM PARAMETERS CURRENTLY), THEIR ERRORS, AND THEIR RETURN VALUES
+---CURRENTLY ALL THAT REQUIRE PRIOR AUTHORIZATION REQUIRE COOKIE SUPPORT BY CLIENT FOR SESSION MANAGEMENT
+
+USERS:
+---------------------------------------------
+/rest/users/create
+---------------------------------------------
+(requires no user to be logged in)
+PARAMETERS:
+-username (greater than or equal to 3 characters, less than or equal to 20 characters)
+-password (greater than or equal to 5 characters, less than or equal to 100 characters)
+-displayName (greater than or equal to 3 characters, less than or equal to 20 characters)
+-email (greater than or equal to 7 characters, less than or equal to 100 characters, must have format: abc@abc.abc)
+-question1 (greater than or equal to 5 characters, less than or equal to 100 characters)
+-answer1 (greater than or equal to 5 characters, less than or equal to 100 characters)
+-question2 (greater than or equal to 5 characters, less than or equal to 100 characters)
+-answer2 (greater than or equal to 5 characters, less than or equal to 100 characters)
+-question3 (greater than or equal to 5 characters, less than or equal to 100 characters)
+-answer3 (greater than or equal to 5 characters, less than or equal to 100 characters)
+ERRORS:
+-400 (Bad Request): "Invalid Username", "Invalid Display Name", "Invalid Email", "Invalid Password", "Invalid Security Info", "Username Taken"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/users/login
+---------------------------------------------
+(5 bad attempts in 5 minutes will lock user out for 5 minutes)
+PARAMETERS:
+-username
+-password
+ERRORS:
+-400 (Bad Request): "No Such User", "User Locked"
+RETURNS:
+-200 "true", "false"
+---------------------------------------------
+/rest/users/logout
+---------------------------------------------
+PARAMETERS:
+-username
+ERRORS:
+-400 (Bad Request):
+RETURNS:
+-200
+---------------------------------------------
+/rest/users/changepassword
+---------------------------------------------
+PARAMETERS:
+-username
+-oldPassword
+-newPassword (greater than or equal to 5 characters, less than or equal to 100 characters)
+ERRORS:
+-400 (Bad Request): "No Such User", "User Locked", "Invalid Password"
+RETURNS:
+-200 "true", "false"
+---------------------------------------------
+/rest/users/resetpassword
+---------------------------------------------
+PARAMETERS:
+-username
+-newPassword (greater than or equal to 5 characters, less than or equal to 100 characters)
+-question1
+-answer1
+-question2
+-answer2
+-question3
+-answer3
+ERRORS:
+-400 (Bad Request): "No Such User", "Invalid Password"
+RETURNS:
+-200 "true", "false"
+---------------------------------------------
+/rest/users/updatedisplayname
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+-displayName (greater than or equal to 3 characters, less than or equal to 20 characters)
+ERRORS:
+-400 (Bad Request): "No Such User", "Invalid Display Name"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/users/updateemail
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+-email (greater than or equal to 7 characters, less than or equal to 100 characters, must have format: abc@abc.abc)
+ERRORS:
+-400 (Bad Request): "No Such User", "Invalid Email"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/users/getinfo
+---------------------------------------------
+PARAMETERS:
+-username
+ERRORS:
+-400 (Bad Request): "No Such User"
+RETURNS:
+-200: User Object(username, displayName, email, joinDate, karma)
+---------------------------------------------
+/rest/users/getqs
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+ERRORS:
+-400 (Bad Request): "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200: questions (an array of 3 user sec questions)
+---------------------------------------------
+/rest/users/updateqs
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+-password
+-question1 (greater than or equal to 5 characters, less than or equal to 100 characters)
+-answer1 (greater than or equal to 5 characters, less than or equal to 100 characters)
+-question2 (greater than or equal to 5 characters, less than or equal to 100 characters)
+-answer2 (greater than or equal to 5 characters, less than or equal to 100 characters)
+-question3 (greater than or equal to 5 characters, less than or equal to 100 characters)
+-answer3 (greater than or equal to 5 characters, less than or equal to 100 characters)
+ERRORS:
+-400 (Bad Request): "No Such User", "Invalid Security Info", "User Locked"
+-401 (Unauthorized)
+RETURNS:
+-200 "true" or "false" (for valid input)
+---------------------------------------------
+/rest/users/delete
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+ERRORS:
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+
+
+
+
+
+MESSAGING:
+---------------------------------------------
+/rest/messaging/startconversation
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-fromUsername
+-toUsernameList
+-subject (<= 140 chars)
+-content (<=10000 chars)
+ERRORS:
+-400 (Bad Request): "No Such From User", "Invalid Subject", "Invalid Content", "No Such To User"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/messaging/replymessage
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-fromUsername
+-conversationId
+-subject (<= 140 chars)
+-content (<=10000 chars)
+ERRORS:
+-400 (Bad Request): "No Such From User", "Invalid Subject", "Invalid Content", "No Such Conversation", "User Not Conversation Member"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/messaging/getorderedconversationsrange
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+-start
+-returnCount
+ERRORS:
+-400 (Bad Request): "No Such User", "Out of Range"
+-401 (Unauthorized)
+RETURNS:
+-200: List of Conversation objects (id, username, started, mostRecent, chainLength, List of Message objects (id, username, sent, subject, content, chainNum))
+---------------------------------------------
+/rest/messaging/hideconversationbyuser
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+-conversationId
+ERRORS:
+-400 (Bad Request): "No Such User", "No Such Conversation", "User Not Conversation Member"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/messaging/hasreadmessage
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+-messageId
+ERRORS:
+-400 (Bad Request): "No Such User", "No Such Message", "User Not Conversation Member"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/messaging/updatesettings
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+-collapseReadMessages
+-allOrWhiteList
+-notifyUnreadMessages
+-markReadIfOpened
+ERRORS:
+-400 (Bad Request): "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/messaging/addfilter
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+-managedUsername
+-blockAllow
+ERRORS:
+-400 (Bad Request): "No Such User", "No Such Managed User"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/messaging/removefilter
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+-managedUsername
+-blockAllow
+ERRORS:
+-400 (Bad Request): "No Such User", "No Such Managed User"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/messaging/getsettings
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+ERRORS:
+-400 (Bad Request): "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200: Settings object (collapseReadMessages, allOrWhitelist, notifyMessages, openMarkRead)
+---------------------------------------------
+/rest/messaging/getfilters
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+ERRORS:
+-400 (Bad Request): "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200: List of filter objects (username, managedUsername, blockAllow)
+---------------------------------------------
+/rest/messaging/getnotifications
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+ERRORS:
+-400 (Bad Request): "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200: List of notification objects (idNumber, idNumberType)
+---------------------------------------------
+/rest/messaging/getconversationcount
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+ERRORS:
+-400 (Bad Request): "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200: number count of conversations for user
+---------------------------------------------
+
+
+
+
+
+SUBFORUMS:
+---------------------------------------------
+/rest/subforums/create
+---------------------------------------------
+(requires username logged in)
+PARAMETERS:
+-username
+-name (<= 50 chars)
+-description (<= 10000 chars)
+-flair (<= 50 chars)
+-subforumRules (<= 10000 chars)
+ERRORS:
+-400 (Bad Request): "Invalid Subforum Name", "Invalid Description", "Invalid Flair", "Invalid Rules", "No Such User", "Subforum Name Taken"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/subforums/updatedescription
+---------------------------------------------
+PARAMETERS:
+-subforumName
+-description (<= 10000 chars)
+ERRORS:
+-400 (Bad Request): "Invalid Description", "No Such Subforum"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/subforums/updateflair
+---------------------------------------------
+PARAMETERS:
+-subforumName
+-flair (<= 50 chars)
+ERRORS:
+-400 (Bad Request): "Invalid Flair", "No Such Subforum"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/subforums/updaterules
+---------------------------------------------
+PARAMETERS:
+-subforumName
+-rules (<= 10000 chars)
+ERRORS:
+-400 (Bad Request): "Invalid Rules", "No Such Subforum"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/subforums/subscribe
+---------------------------------------------
+PARAMETERS:
+-username
+-subforumName
+ERRORS:
+-400 (Bad Request): "No Such User", "No Such Subforum"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/subforums/unsubscribe
+---------------------------------------------
+PARAMETERS:
+-username
+-subforumName
+ERRORS:
+-400 (Bad Request): "No Such User", "No Such Subforum"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/subforums/addmod
+---------------------------------------------
+PARAMETERS:
+-username
+-subforumName
+ERRORS:
+-400 (Bad Request): "No Such User", "No Such Subforum"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/subforums/removemod
+---------------------------------------------
+PARAMETERS:
+-username
+-subforumName
+ERRORS:
+-400 (Bad Request): "No Such User", "No Such Subforum"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/subforums/ismod
+---------------------------------------------
+PARAMETERS:
+-subforumName
+-username
+ERRORS:
+-400 (Bad Request): "No Such User", "No Such Subforum"
+RETURNS:
+-200: "true" or "false"
+---------------------------------------------
+/rest/subforums/issubscribed
+---------------------------------------------
+PARAMETERS:
+-subforumName
+-username
+ERRORS:
+-400 (Bad Request): "No Such User", "No Such Subforum"
+-401 (Unauthorized)
+RETURNS:
+-200: "true" or "false"
+---------------------------------------------
+/rest/subforums/getsubscriptionsbyuser
+---------------------------------------------
+PARAMETERS:
+-username
+ERRORS:
+-400 (Bad Request): "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200: List of subforum objects (name, description, flair, subscriberCount, createdDate, creatorUsername)
+---------------------------------------------
+/rest/subforums/getorderedpaginated
+---------------------------------------------
+PARAMETERS:
+-start
+-returnCount
+ERRORS:
+-400 (Bad Request): "Out of Range"
+RETURNS:
+-200: List of subforum objects (name, description, flair, subscriberCount, createdDate, creatorUsername)
+---------------------------------------------
+/rest/subforums/getcount
+---------------------------------------------
+PARAMETERS:
+----
+ERRORS:
+----
+RETURNS:
+-200: int count of subforums
+---------------------------------------------
+/rest/subforums/getmodsorderedbyrank
+---------------------------------------------
+PARAMETERS:
+-subforumName
+ERRORS:
+-400 (Bad Request): "No Such Subforum"
+RETURNS:
+-200: List of mod objects (username, rank)
+---------------------------------------------
+/rest/subforums/exists
+---------------------------------------------
+PARAMETERS:
+-subforumName
+ERRORS:
+----
+RETURNS:
+-200: "true" or "false"
+---------------------------------------------
+/rest/subforums/getbyname
+---------------------------------------------
+PARAMETERS:
+-subforumName
+ERRORS:
+-400 (Bad Request): "No Such Subforum"
+RETURNS:
+-200: subforum object (name, description, flair, subscriberCount, createdDate, creatorUsername)
+---------------------------------------------
+/rest/subforums/getsettingsbyname
+---------------------------------------------
+PARAMETERS:
+-subforumName
+ERRORS:
+-400 (Bad Request): "No Such Subforum"
+RETURNS:
+-200: subsettings object (subforumName, rules)
+---------------------------------------------
+
+
+
+
+
+POSTS:
+---------------------------------------------
+/rest/posts/create
+---------------------------------------------
+PARAMETERS:
+-username
+-subforumName
+-title (<= 140 chars)
+-content (<= 10000 chars)
+ERRORS:
+-400 (Bad Request): "Invalid Title", "Invalid Content", "No Such User", "No Such Subforum"
+-401 (Unauthorized)
+RETURNS:
+-200: int post id
+---------------------------------------------
+/rest/posts/updatetitle
+---------------------------------------------
+PARAMETERS:
+-id
+-title (<= 140 chars)
+-username
+ERRORS:
+-400 (Bad Request): "Invalid Title", "No Such Post", "Not Authorized to Update"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/posts/updatecontent
+---------------------------------------------
+PARAMETERS:
+-id
+-content (<= 10000 chars)
+-username
+ERRORS:
+-400 (Bad Request): "Invalid Content", "No Such Post", "Not Authorized to Update"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/posts/upvote
+---------------------------------------------
+PARAMETERS:
+-id
+-username
+ERRORS:
+-400 (Bad Request): "No Such Post", "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/posts/downvote
+---------------------------------------------
+PARAMETERS:
+-id
+-username
+ERRORS:
+-400 (Bad Request): "No Such Post", "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/posts/removevote
+---------------------------------------------
+PARAMETERS:
+-id
+-username
+ERRORS:
+-400 (Bad Request): "No Such Post", "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/posts/removeuser
+---------------------------------------------
+PARAMETERS:
+-id
+-username
+ERRORS:
+-400 (Bad Request): "No Such Post", "No Such User", "Not Authorized to Delete"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/posts/getbysubforumorderedpaginated
+---------------------------------------------
+PARAMETERS:
+-subforumName
+-start
+-returnCount
+-byUsername
+ERRORS:
+-400 (Bad Request): "No Such Subforum", "No Such User", "Out of Range"
+-401 (Unauthorized)
+RETURNS:
+-200: list of post objects (id, postedDate, username, subforumName, karma, title, content)
+---------------------------------------------
+/rest/posts/getcountbysubforumfiltered
+---------------------------------------------
+PARAMETERS:
+-subforumName
+-byUsername
+ERRORS:
+-400 (Bad Request): "No Such Subforum", "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200: int count
+---------------------------------------------
+/rest/posts/getbyuserorderedpaginated
+---------------------------------------------
+PARAMETERS:
+-username
+-start
+-returnCount
+ERRORS:
+-400 (Bad Request): "No Such User", "Out of Range"
+RETURNS:
+-200: list of post objects (id, postedDate, username, subforumName, karma, title, content)
+---------------------------------------------
+/rest/posts/getcountbyuser
+---------------------------------------------
+PARAMETERS:
+-username
+ERRORS:
+-400 (Bad Request): "No Such User"
+RETURNS:
+-200: int count
+---------------------------------------------
+/rest/posts/getforusersubscribedorderedpaginated
+---------------------------------------------
+PARAMETERS:
+-username
+-start
+-returnCount
+ERRORS:
+-400 (Bad Request): "No Such User", "Out of Range"
+-401 (Unauthorized)
+RETURNS:
+-200: list of post objects (id, postedDate, username, subforumName, karma, title, content)
+---------------------------------------------
+/rest/posts/getcountforusersubscribed
+---------------------------------------------
+PARAMETERS:
+-username
+ERRORS:
+-400 (Bad Request): "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200: int count
+---------------------------------------------
+/rest/posts/getbyid
+---------------------------------------------
+PARAMETERS:
+-id
+ERRORS:
+-400 (Bad Request): "No Such Post"
+RETURNS:
+-200: post object (id, postedDate, username, subforumName, karma, title, content)
+---------------------------------------------
+
+
+
+
+
+COMMENTS:
+---------------------------------------------
+/rest/comments/create
+---------------------------------------------
+PARAMETERS:
+-username
+-postId
+-subforumName
+-content (<= 10000 chars)
+-parentCommentId
+ERRORS:
+-400 (Bad Request): "No Such User", "No Such Subforum", "No Such Post", "Invalid Content"
+-401 (Unauthorized)
+RETURNS:
+-200: int id
+---------------------------------------------
+/rest/comments/hasRead
+---------------------------------------------
+PARAMETERS:
+-id
+-username
+ERRORS:
+-400 (Bad Request): "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/comments/updatecontent
+---------------------------------------------
+PARAMETERS:
+-id
+-content (<= 10000 chars)
+-username
+ERRORS:
+-400 (Bad Request): "Not Authorized to Update", "No Such Comment", "Invalid Content"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/comments/upvote
+---------------------------------------------
+PARAMETERS:
+-id
+-username
+ERRORS:
+-400 (Bad Request): "No Such Comment", "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/comments/downvote
+---------------------------------------------
+PARAMETERS:
+-id
+-username
+ERRORS:
+-400 (Bad Request): "No Such Comment", "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/comments/removevote
+---------------------------------------------
+PARAMETERS:
+-id
+-username
+ERRORS:
+-400 (Bad Request): "No Such Comment", "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/comments/removeuser
+---------------------------------------------
+PARAMETERS:
+-id
+-username
+ERRORS:
+-400 (Bad Request): "No Such Comment", "No Such User", "Not Authorized to Delete"
+-401 (Unauthorized)
+RETURNS:
+-200
+---------------------------------------------
+/rest/comments/getbyid
+---------------------------------------------
+PARAMETERS:
+-id
+ERRORS:
+-400 (Bad Request): "No Such Comment"
+RETURNS:
+-200: comment object (id, commentDate, username, postId, subforumName, karma, content, parentCommentId, commentDepth, hasChildren)
+---------------------------------------------
+/rest/comments/getbyuserorderedpaginated
+---------------------------------------------
+PARAMETERS:
+-username
+-start
+-returnCount
+ERRORS:
+-400 (Bad Request): "No Such User", "Out of Range"
+RETURNS:
+-200: List of comment objects (id, commentDate, username, postId, subforumName, karma, content, parentCommentId, commentDepth, hasChildren)
+---------------------------------------------
+/rest/comments/getcountbyuser
+---------------------------------------------
+PARAMETERS:
+-username
+ERRORS:
+-400 (Bad Request): "No Such User"
+RETURNS:
+-200: int count
+---------------------------------------------
+/rest/comments/getbypost
+---------------------------------------------
+PARAMETERS:
+-postId
+-requestingUsername
+-start
+-returnCount
+-depth
+ERRORS:
+-400 (Bad Request): "No Such User", "Out of Range"
+-401 (Unauthorized)
+RETURNS:
+-200: List of comment objects (id, commentDate, username, postId, subforumName, karma, content, parentCommentId, commentDepth, hasChildren)
+---------------------------------------------
+/rest/comments/getcountbypostfiltered
+---------------------------------------------
+PARAMETERS:
+-postId
+-requestingUsername
+ERRORS:
+-400 (Bad Request): "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200: int count
+---------------------------------------------
+/rest/comments/getchildrenof
+---------------------------------------------
+PARAMETERS:
+-commentId
+-requestingUsername
+-start
+-returnCount
+-depth
+ERRORS:
+-400 (Bad Request): "No Such User", "Out of Range"
+-401 (Unauthorized)
+RETURNS:
+-200: List of comment objects (id, commentDate, username, postId, subforumName, karma, content, parentCommentId, commentDepth, hasChildren)
+---------------------------------------------
+/rest/comments/getcountchildrenof
+---------------------------------------------
+PARAMETERS:
+-commentId
+-requestingUsername
+ERRORS:
+-400 (Bad Request): "No Such User"
+-401 (Unauthorized)
+RETURNS:
+-200: int count
+---------------------------------------------

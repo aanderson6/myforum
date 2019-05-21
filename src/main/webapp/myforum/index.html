@@ -1,0 +1,871 @@
+<html>
+<head>
+
+<meta charset="UTF-8">
+
+<script type="text/javascript" src="callbackAjax.js"></script>
+<script type="text/javascript" src="ajaxUsers.js"></script>
+<script type="text/javascript" src="ajaxMessaging.js"></script>
+<script type="text/javascript" src="ajaxSubforums.js"></script>
+<script type="text/javascript" src="ajaxPosts.js"></script>
+<script type="text/javascript" src="ajaxComments.js"></script>
+
+</head>
+<body>
+
+<p id="usernameParagraph"></p>
+<select id="mainDropdown" onchange="changeMainDropdown()" style="display:block">
+  <option value="users">Users</option>
+  <option value="messaging">Messaging</option>
+  <option value="subforums">Subforums</option>
+  <option value="posts">Posts</option>
+  <option value="comments">Comments</option>
+</select>
+
+<select id="usersDropdown" onchange="changeUsersDropdown()" style="display:block">
+  <option value="createUser">createUser</option>
+  <option value="login">Login</option>
+  <option value="logout">Logout</option>
+  <option value="changePassword">changePassword</option>
+  <option value="resetPassword">resetPassword</option>
+  <option value="updateDisplayName">updateDisplayName</option>
+  <option value="updateEmail">updateEmail</option>
+  <option value="getInfo">getInfo</option>
+  <option value="getQs">getQs</option>
+  <option value="updateQs">updateQs</option>
+  <option value="delete">delete</option>
+</select>
+
+<select id="messagingDropdown" onchange="changeMessagingDropdown()" style="display:none">
+  <option value="startConversation">startConversation</option>
+  <option value="replyMessage">replyMessage</option>
+  <option value="getConversationsPaged">getConversationsPaged</option>
+  <option value="hideByUser">hideByUser</option>
+  <option value="hasReadMessage">hasReadMessage</option>
+  <option value="updateSettings">updateSettings</option>
+  <option value="addFilter">addFilter</option>
+  <option value="removeFilter">removeFilter</option>
+  <option value="getSettings">getSettings</option>
+  <option value="getFilters">getFilters</option>
+  <option value="getNotifications">getNotifications</option>
+  <option value="getConversationCount">getConversationCount</option>
+</select>
+
+<select id="subforumDropdown" onchange="changeSubforumDropdown()" style="display:none">
+  <option value="createSubforum">createSubforum</option>
+  <option value="updateDescription">updateDescription</option>
+  <option value="updateFlair">updateFlair</option>
+  <option value="updateRules">updateRules</option>
+  <option value="subscribe">subscribe</option>
+  <option value="unsubscribe">unsubscribe</option>
+  <option value="addMod">addMod</option>
+  <option value="removeMod">removeMod</option>
+  <option value="isMod">isMod</option>
+  <option value="isSubscribed">isSubscribed</option>
+  <option value="getSubscriptionsByUser">getSubscriptionsByUser</option>
+  <option value="getSubforumsPaged">getSubforumsPaged</option>
+  <option value="getSubforumCount">getSubforumCount</option>
+  <option value="getModsBySubforumOrdered">getModsBySubforumOrdered</option>
+  <option value="subforumExists">subforumExists</option>
+  <option value="getSubforumByName">getSubforumByName</option>
+  <option value="getSubSettingsByName">getSubSettingsByName</option>
+</select>
+
+<select id="postDropdown" onchange="changePostDropdown()" style="display:none">
+  <option value="createPost">createPost</option>
+  <option value="updateTitle">updateTitle</option>
+  <option value="updatePostContent">updatePostContent</option>
+  <option value="upvotePost">upvotePost</option>
+  <option value="downvotePost">downvotePost</option>
+  <option value="removevotePost">removevotePost</option>
+  <option value="removeUserFromPost">removeUserFromPost</option>
+  <option value="getPostsBySubforumPaged">getPostsBySubforumPaged</option>
+  <option value="getPostCountBySubforum">getPostCountBySubforum</option>
+  <option value="getPostsByUser">getPostsByUser</option>
+  <option value="getPostCountByUser">getPostCountByUser</option>
+  <option value="getForUserSubscribedPaged">getForUserSubscribedPaged</option>
+  <option value="getCountForUserSubscribed">getCountForUserSubscribed</option>
+  <option value="getPostById">getPostById</option>
+</select>
+
+<select id="commentDropdown" onchange="changeCommentDropdown()" style="display:none">
+  <option value="createComment">createComment</option>
+  <option value="hasReadComment">hasReadComment</option>
+  <option value="updateCommentContent">updateCommentContent</option>
+  <option value="upvoteComment">upvoteComment</option>
+  <option value="downvoteComment">downvoteComment</option>
+  <option value="removeVoteComment">removeVoteComment</option>
+  <option value="removeUserFromComment">removeUserFromComment</option>
+  <option value="getCommentById">getCommentById</option>
+  <option value="getCommentByUserPaged">getCommentByUserPaged</option>
+  <option value="getCommentCountByUser">getCommentCountByUser</option>
+  <option value="getCommentsByPost">getCommentsByPost</option>
+  <option value="getCommentCountByPost">getCommentCountByPost</option>
+  <option value="getCommentChildren">getCommentChildren</option>
+  <option value="getCommentChildrenCount">getCommentChildrenCount</option>
+</select>
+
+------------------------------------------------------
+<section id="usersForms" style="display:block">
+  <section id="createUser" style="display:block">
+    createUser:<br />
+    Username: <input type="text" id="usernameCreateUser"><br />
+    Password: <input type="text" id="passwordCreateUser"><br />
+    displayName: <input type="text" id="displayNameCreateUser"><br />
+    Email: <input type="text" id="emailCreateUser"><br />
+    Question1: <input type="text" id="question1CreateUser"><br />
+    Answer1: <input type="text" id="answer1CreateUser"><br />
+    Question2: <input type="text" id="question2CreateUser"><br />
+    Answer2: <input type="text" id="answer2CreateUser"><br />
+    Question3: <input type="text" id="question3CreateUser"><br />
+    Answer3: <input type="text" id="answer3CreateUser"><br />
+    <button type="button" id="createUserButton" onclick="ajaxCreateUser(callbackCreateUser, document.getElementById('usernameCreateUser').value, document.getElementById('passwordCreateUser').value, document.getElementById('displayNameCreateUser').value, document.getElementById('emailCreateUser').value, document.getElementById('question1CreateUser').value, document.getElementById('answer1CreateUser').value, document.getElementById('question2CreateUser').value, document.getElementById('answer2CreateUser').value, document.getElementById('question3CreateUser').value, document.getElementById('answer3CreateUser').value);">CREATE USER</button>
+    <p id="createUserOutput"></p>
+  </section>
+
+  <section id="login" style="display:none">
+    login:<br />
+    Username: <input type="text" id="usernameLogin"><br />
+    Password: <input type="text" id="passwordLogin"><br />
+    <button type="button" id="loginButton" onclick="ajaxLogin(callbackLogin, document.getElementById('usernameLogin').value, document.getElementById('passwordLogin').value)">LOGIN</button>
+    <p id="loginOutput"></p>
+  </section>
+
+  <section id="logout" style="display:none">
+    logout:<br />
+    Username: <input type="text" id="usernameLogout"><br />
+    <button type="button" id="logoutButton" onclick="ajaxLogout(callbackLogout, document.getElementById('usernameLogout').value)">LOGOUT</button>
+    <p id="logoutOutput"></p>
+  </section>
+
+  <section id="changePassword" style="display:none">
+    changePassword:<br />
+    Username: <input type="text" id="usernameChangePassword"><br />
+    Old Password: <input type="text" id="oldpasswordChangePassword"><br />
+    New Password: <input type="text" id="newpasswordChangePassword"><br />
+    <button type="button" id="changePasswordButton" onclick="ajaxChangePassword(callbackChangePassword, document.getElementById('usernameChangePassword').value, document.getElementById('oldpasswordChangePassword').value, document.getElementById('newpasswordChangePassword').value)">CHANGE PASSWORD</button>
+    <p id="changePasswordOutput"></p>
+  </section>
+
+  <section id="resetPassword" style="display:none">
+    resetPassword:<br />
+    Username: <input type="text" id="usernameresetPassword"><br />
+    New Password: <input type="text" id="newPasswordresetPassword"><br />
+    Question1: <input type="text" id="question1resetPassword"><br />
+    Answer1: <input type="text" id="answer1resetPassword"><br />
+    Question2: <input type="text" id="question2resetPassword"><br />
+    Answer2: <input type="text" id="answer2resetPassword"><br />
+    Question3: <input type="text" id="question3resetPassword"><br />
+    Answer3: <input type="text" id="answer3resetPassword"><br />
+    <button type="button" id="resetPasswordButton" onclick="ajaxResetPassword(callbackResetPassword, document.getElementById('usernameresetPassword').value, document.getElementById('newPasswordresetPassword').value, document.getElementById('question1resetPassword').value, document.getElementById('answer1resetPassword').value, document.getElementById('question2resetPassword').value, document.getElementById('answer2resetPassword').value, document.getElementById('question3resetPassword').value, document.getElementById('answer3resetPassword').value)">RESET PASSWORD</button>
+    <p id="resetPasswordOutput"></p>
+  </section>
+
+  <section id="updateDisplayName" style="display:none">
+    updateDisplayName:<br />
+    Username: <input type="text" id="usernameUpdateDisplayName"><br />
+    DisplayName: <input type="text" id="displayNameUpdateDisplayName"><br />
+    <button type="button" id="updateDisplayNameButton" onclick="ajaxUpdateDisplayName(callbackUpdateDisplayName, document.getElementById('usernameUpdateDisplayName').value, document.getElementById('displayNameUpdateDisplayName').value)">DISPLAY NAME UPDATE</button>
+    <p id="updateDisplayNameOutput"></p>
+  </section>
+
+  <section id="updateEmail" style="display:none">
+    updateEmail:<br />
+    Username: <input type="text" id="usernameUpdateEmail"><br />
+    Email: <input type="text" id="emailUpdateEmail"><br />
+    <button type="button" id="updateEmailButton" onclick="ajaxUpdateEmail(callbackUpdateEmail, document.getElementById('usernameUpdateEmail').value, document.getElementById('emailUpdateEmail').value)">EMAIL UPDATE</button>
+    <p id="updateEmailOutput"></p>
+  </section>
+
+  <section id="getInfo" style="display:none">
+    getInfo:<br />
+    Username: <input type="text" id="usernameGetInfo"><br />
+    <button type="button" id="getUserInfoButton" onclick="ajaxGetInfo(callbackGetUserInfo, document.getElementById('usernameGetInfo').value)">GET USER INFO</button>
+    <p id="getUserInfoOutput"></p>
+  </section>
+
+  <section id="getQs" style="display:none">
+    getQs:<br />
+    Username: <input type="text" id="usernameGetUserQs"><br />
+    <button type="button" id="getUserQsButton" onclick="ajaxGetQs(callbackGetUserQs, document.getElementById('usernameGetUserQs').value)">GET USER Qs</button>
+    <p id="getUserQsOutput"></p>
+  </section>
+
+  <section id="updateQs" style="display:none">
+    updateQs:<br />
+    Username: <input type="text" id="usernameUpdateUserQs"><br />
+    Password: <input type="text" id="passwordUpdateUserQs"><br />
+    Question1: <input type="text" id="question1UpdateUserQs"><br />
+    Answer1: <input type="text" id="answer1UpdateUserQs"><br />
+    Question2: <input type="text" id="question2UpdateUserQs"><br />
+    Answer2: <input type="text" id="answer2UpdateUserQs"><br />
+    Question3: <input type="text" id="question3UpdateUserQs"><br />
+    Answer3: <input type="text" id="answer3UpdateUserQs"><br />
+    <button type="button" id="updateUserQsButton" onclick="ajaxUpdateQs(callbackUpdateUserQs, document.getElementById('usernameUpdateUserQs').value, document.getElementById('passwordUpdateUserQs').value, document.getElementById('question1UpdateUserQs').value, document.getElementById('answer1UpdateUserQs').value, document.getElementById('question2UpdateUserQs').value, document.getElementById('answer2UpdateUserQs').value, document.getElementById('question3UpdateUserQs').value, document.getElementById('answer3UpdateUserQs').value)">UPDATE USER Qs</button>
+    <p id="updateUserQsOutput"></p>
+  </section>
+
+  <section id="delete" style="display:none">
+    delete:<br />
+    Username: <input type="text" id="usernameDeleteUser"><br />
+    <button type="button" id="deleteUserButton" onclick="ajaxDeleteUser(callbackDeleteUser, document.getElementById('usernameDeleteUser').value)">DELETE USER</button>
+    <p id="deleteUserOutput"></p>
+  </section>
+</section>
+
+
+
+
+<section id="messagingForms" style="display:none">
+  <section id="startConversation" style="display:block">
+    startConversation:<br />
+    From Username: <input type="text" id="fromUsernameStartConversation"><br />
+    To Username List: <input type="text" id="toUsernamesStartConversation"><br />
+    Subject: <input type="text" id="subjectStartConversation"><br />
+    Content: <input type="text" id="contentStartConversation"><br />
+    <button type="button" id="startConversationButton" onclick="ajaxStartConversation(callbackStartConversation, document.getElementById('fromUsernameStartConversation').value, document.getElementById('toUsernamesStartConversation').value, document.getElementById('subjectStartConversation').value, document.getElementById('contentStartConversation').value)">START CONVERSATION</button>
+    <p id="startConversationOutput"></p>
+  </section>
+
+  <section id="replyMessage" style="display:none">
+    replyMessage:<br />
+    From Username: <input type="text" id="fromUsernameReplyMessage"><br />
+    Conversation Id: <input type="text" id="conversationIdReplyMessage"><br />
+    Subject: <input type="text" id="subjectReplyMessage"><br />
+    Content: <input type="text" id="contentReplyMessage"><br />
+    <button type="button" id="replyMessageButton" onclick="ajaxReplyMessage(callbackReplyMessage, document.getElementById('fromUsernameReplyMessage').value, document.getElementById('conversationIdReplyMessage').value, document.getElementById('subjectReplyMessage').value, document.getElementById('contentReplyMessage').value)">REPLY MESSAGE</button>
+    <p id="replyMessageOutput"></p>
+  </section>
+
+  <section id="getConversationsPaged" style="display:none">
+    getConversationsPaged:<br />
+    Username: <input type="text" id="usernameGetConversationsPaged"><br />
+    Start: <input type="text" id="startGetConversationsPaged"><br />
+    Return Count: <input type="text" id="returnCountGetConversationsPaged"><br />
+    <button type="button" id="getConversationsPagedButton" onclick="ajaxGetConversationsPaged(callbackGetConversationsPaged, document.getElementById('usernameGetConversationsPaged').value, document.getElementById('startGetConversationsPaged').value, document.getElementById('returnCountGetConversationsPaged').value)">GET CONVERSATIONS PAGED</button>
+    <p id="getConversationsPagedOutput"></p>
+  </section>
+
+  <section id="hideByUser" style="display:none">
+    hideByUser:<br />
+    Username: <input type="text" id="usernameHideByUser"><br />
+    Conversation Id: <input type="text" id="conversationIdHideByUser"><br />
+    <button type="button" id="hideByUserButton" onclick="ajaxHideConversation(callbackHideConversationByUser, document.getElementById('usernameHideByUser').value, document.getElementById('conversationIdHideByUser').value)">HIDE BY USER</button>
+    <p id="hideByUserOutput"></p>
+  </section>
+
+  <section id="hasReadMessage" style="display:none">
+    hasReadMessage:<br />
+    Username: <input type="text" id="usernameHasReadMessage"><br />
+    Message Id: <input type="text" id="messageIdHasReadMessage"><br />
+    <button type="button" id="hasReadMessageButton" onclick="ajaxHasReadMessage(callbackHasReadMessage, document.getElementById('usernameHasReadMessage').value, document.getElementById('messageIdHasReadMessage').value)">HAS READ MESSAGE</button>
+    <p id="hasReadMessageOutput"></p>
+  </section>
+
+  <section id="updateSettings" style="display:none">
+    updateSettings:<br />
+    Username: <input type="text" id="usernameUpdateSettings"><br />
+    collapseReadMessages: <input type="text" id="collapseReadMessagesUpdateSettings"><br />
+    allOrWhiteList: <input type="text" id="allOrWhiteListUpdateSettings"><br />
+    notifyUnreadMessages: <input type="text" id="notifyUnreadMessagesUpdateSettings"><br />
+    markReadIfOpened: <input type="text" id="markReadIfOpenedUpdateSettings"><br />
+    <button type="button" id="updateSettingsButton" onclick="ajaxUpdateUserSettings(callbackUpdateSettings, document.getElementById('usernameUpdateSettings').value, document.getElementById('collapseReadMessagesUpdateSettings').value, document.getElementById('allOrWhiteListUpdateSettings').value, document.getElementById('notifyUnreadMessagesUpdateSettings').value, document.getElementById('markReadIfOpenedUpdateSettings').value)">SETTINGS UPDATE</button>
+    <p id="updateSettingsOutput"></p>
+  </section>
+
+  <section id="addFilter" style="display:none">
+    addFilter:<br />
+    Username: <input type="text" id="usernameAddFilter"><br />
+    Managed Username: <input type="text" id="managedUsernameAddFilter"><br />
+    Block Allow: <input type="text" id="blockAllowAddFilter"><br />
+    <button type="button" id="addFilterButton" onclick="ajaxAddFilter(callbackAddFilter, document.getElementById('usernameAddFilter').value, document.getElementById('managedUsernameAddFilter').value, document.getElementById('blockAllowAddFilter').value)">ADD FILTER</button>
+    <p id="addFilterOutput"></p>
+  </section>
+
+  <section id="removeFilter" style="display:none">
+    removeFilter:<br />
+    Username: <input type="text" id="usernameRemoveFilter"><br />
+    Managed Username: <input type="text" id="managedUsernameRemoveFilter"><br />
+    Block Allow: <input type="text" id="blockAllowRemoveFilter"><br />
+    <button type="button" id="removeFilterButton" onclick="ajaxRemoveFilter(callbackRemoveFilter, document.getElementById('usernameRemoveFilter').value, document.getElementById('managedUsernameRemoveFilter').value, document.getElementById('blockAllowRemoveFilter').value)">REMOVE FILTER</button>
+    <p id="removeFilterOutput"></p>
+  </section>
+
+  <section id="getSettings" style="display:none">
+    getUserSettings:<br />
+    Username: <input type="text" id="usernameGetUserSettings"><br />
+    <button type="button" id="getUserSettingsButton" onclick="ajaxGetUserSettings(callbackGetSettings, document.getElementById('usernameGetUserSettings').value)">GET USER SETTINGS</button>
+    <p id="getUserSettingsOutput"></p>
+  </section>
+
+  <section id="getFilters" style="display:none">
+    getFilters:<br />
+    Username: <input type="text" id="usernameGetFilters"><br />
+    <button type="button" id="getFiltersButton" onclick="ajaxGetFilters(callbackGetFilters, document.getElementById('usernameGetFilters').value)">GET FILTERS</button>
+    <p id="getFiltersOutput"></p>
+  </section>
+
+  <section id="getNotifications" style="display:none">
+    getNotifications:<br />
+    Username: <input type="text" id="usernameGetNotifications"><br />
+    <button type="button" id="getNotificationsButton" onclick="ajaxGetNotifications(callbackGetNotifications, document.getElementById('usernameGetNotifications').value)">GET NOTIFICATIONS</button>
+    <p id="getNotificationsOutput"></p>
+  </section>
+
+  <section id="getConversationCount" style="display:none">
+    getConversationCount:<br />
+    Username: <input type="text" id="usernameGetConversationCount"><br />
+    <button type="button" id="getConversationCountButton" onclick="ajaxGetConversationCount(callbackGetConversationCount, document.getElementById('usernameGetConversationCount').value)">GET CONVERSATION COUNT</button>
+    <p id="getConversationCountOutput"></p>
+  </section>
+</section>
+
+
+
+
+<section id="subforumForms" style="display:none">
+  <section id="createSubforum" style="display:block">
+    createSubforum:<br />
+    Username: <input type="text" id="usernameCreateSubforum"><br />
+    Subforum Name: <input type="text" id="nameCreateSubforum"><br />
+    Description: <input type="text" id="descriptionCreateSubforum"><br />
+    Flair: <input type="text" id="flairCreateSubforum"><br />
+    Rules: <input type="text" id="rulesCreateSubforum"><br />
+    <button type="button" id="createSubforumButton" onclick="ajaxCreateSubforum(callbackCreateSubforum, document.getElementById('usernameCreateSubforum').value, document.getElementById('nameCreateSubforum').value, document.getElementById('descriptionCreateSubforum').value, document.getElementById('flairCreateSubforum').value, document.getElementById('rulesCreateSubforum').value)">CREATE SUBFORUM</button>
+    <p id="createSubforumOutput"></p>
+  </section>
+
+  <section id="updateDescription" style="display:none">
+    updateDescription:<br />
+    Subforum Name: <input type="text" id="subforumNameUpdateSubDescription"><br />
+    Description: <input type="text" id="descriptionUpdateSubDescription"><br />
+    <button type="button" id="updateSubDescriptionButton" onclick="ajaxUpdateSubforumDescription(callbackUpdateDescription, document.getElementById('subforumNameUpdateSubDescription').value, document.getElementById('descriptionUpdateSubDescription').value)">UPDATE SUB DESCRIPTION</button>
+    <p id="updateSubDescriptionOutput"></p>
+  </section>
+
+  <section id="updateFlair" style="display:none">
+    updateFlair:<br />
+    Subforum Name: <input type="text" id="subforumNameUpdateSubFlair"><br />
+    Flair: <input type="text" id="flairUpdateSubFlair"><br />
+    <button type="button" id="updateSubFlairButton" onclick="ajaxUpdateSubforumFlair(callbackUpdateFlair, document.getElementById('subforumNameUpdateSubFlair').value, document.getElementById('flairUpdateSubFlair').value)">UPDATE SUB FLAIR</button>
+    <p id="updateSubFlairOutput"></p>
+  </section>
+
+  <section id="updateRules" style="display:none">
+    updateRules:<br />
+    Subforum Name: <input type="text" id="subforumNameUpdateSubRules"><br />
+    Rules: <input type="text" id="rulesUpdateSubRules"><br />
+    <button type="button" id="updateSubRulesButton" onclick="ajaxUpdateSubforumRules(callbackUpdateRules, document.getElementById('subforumNameUpdateSubRules').value, document.getElementById('rulesUpdateSubRules').value)">UPDATE SUB RULES</button>
+    <p id="updateSubRulesOutput"></p>
+  </section>
+
+  <section id="subscribe" style="display:none">
+    subscribe:<br />
+    Username: <input type="text" id="usernameSubscribe"><br />
+    Subforum Name: <input type="text" id="subforumNameSubscribe"><br />
+    <button type="button" id="subscribeButton" onclick="ajaxSubscribeToSubforum(callbackSubscribe, document.getElementById('usernameSubscribe').value, document.getElementById('subforumNameSubscribe').value)">SUBSCRIBE</button>
+    <p id="subscribeOutput"></p>
+  </section>
+
+  <section id="unsubscribe" style="display:none">
+    unsubscribe:<br />
+    Username: <input type="text" id="usernameUnsubscribe"><br />
+    Subforum Name: <input type="text" id="subforumNameUnsubscribe"><br />
+    <button type="button" id="unsubscribeButton" onclick="ajaxUnsubscribeFromSubforum(callbackUnsubscribe, document.getElementById('usernameUnsubscribe').value, document.getElementById('subforumNameUnsubscribe').value)">UNSUBSCRIBE</button>
+    <p id="unsubscribeOutput"></p>
+  </section>
+
+  <section id="addMod" style="display:none">
+    addMod:<br />
+    Username: <input type="text" id="usernameAddMod"><br />
+    Subforum Name: <input type="text" id="subforumNameAddMod"><br />
+    <button type="button" id="addModButton" onclick="ajaxAddModToSubforum(callbackAddMod, document.getElementById('usernameAddMod').value, document.getElementById('subforumNameAddMod').value)">ADD MOD</button>
+    <p id="addModOutput"></p>
+  </section>
+
+  <section id="removeMod" style="display:none">
+    removeMod:<br />
+    Username: <input type="text" id="usernameRemoveMod"><br />
+    Subforum Name: <input type="text" id="subforumNameRemoveMod"><br />
+    <button type="button" id="removeModButton" onclick="ajaxRemoveModFromSubforum(callbackRemoveMod, document.getElementById('usernameRemoveMod').value, document.getElementById('subforumNameRemoveMod').value)">REMOVE MOD</button>
+    <p id="removeModOutput"></p>
+  </section>
+
+  <section id="isMod" style="display:none">
+    isMod:<br />
+    Subforum Name: <input type="text" id="subforumNameIsMod"><br />
+    Username: <input type="text" id="usernameIsMod"><br />
+    <button type="button" id="isModButton" onclick="ajaxIsModOfSubforum(callbackIsMod, document.getElementById('subforumNameIsMod').value, document.getElementById('usernameIsMod').value)">IS MOD</button>
+    <p id="isModOutput"></p>
+  </section>
+
+  <section id="isSubscribed" style="display:none">
+    isSubscribed:<br />
+    Subforum Name: <input type="text" id="subforumNameIsSubscribed"><br />
+    Username: <input type="text" id="usernameIsSubscribed"><br />
+    <button type="button" id="isSubscribedButton" onclick="ajaxIsSubscribedToSubforum(callbackIsSubscribed, document.getElementById('subforumNameIsSubscribed').value, document.getElementById('usernameIsSubscribed').value)">IS SUBSCRIBED</button>
+    <p id="isSubscribedOutput"></p>
+  </section>
+
+  <section id="getSubscriptionsByUser" style="display:none">
+    getSubscriptionsByUser:<br />
+    Username: <input type="text" id="usernameGetSubscriptionsByUser"><br />
+    <button type="button" id="getSubscriptionsByUserButton" onclick="ajaxGetSubforumsSubscribedByUser(callbackGetSubscriptionsByUser, document.getElementById('usernameGetSubscriptionsByUser').value)">GET SUBSCRIPTIONS BY USER</button>
+    <p id="getSubscriptionsByUserOutput"></p>
+  </section>
+
+  <section id="getSubforumsPaged" style="display:none">
+    getSubforumsPaged:<br />
+    Start: <input type="text" id="startGetSubforumsPaged"><br />
+    Return Count: <input type="text" id="returnCountGetSubforumsPaged"><br />
+    <button type="button" id="getSubforumsPagedButton" onclick="ajaxGetSubforumsPaged(callbackGetSubforumsPaged, document.getElementById('startGetSubforumsPaged').value, document.getElementById('returnCountGetSubforumsPaged').value)">GET SUBFORUMS PAGED</button>
+    <p id="getSubforumsPagedOutput"></p>
+  </section>
+
+  <section id="getSubforumCount" style="display:none">
+    getSubforumCount:<br />
+    <button type="button" id="getSubforumsCountButton" onclick="ajaxGetSubforumCount(callbackGetSubforumCount)">GET SUBFORUMS COUNT</button>
+    <p id="getSubforumsCountOutput"></p>
+  </section>
+
+  <section id="getModsBySubforumOrdered" style="display:none">
+    getModsBySubforumOrdered:<br />
+    Subforum Name: <input type="text" id="subforumNameGetModsBySubforum"><br />
+    <button type="button" id="getModsBySubforumButton" onclick="ajaxGetModsBySubforumRankOrder(callbackGetModsBySubforum, document.getElementById('subforumNameGetModsBySubforum').value)">GET MODS BY SUBFORUM</button>
+    <p id="getModsBySubforumOutput"></p>
+  </section>
+
+  <section id="subforumExists" style="display:none">
+    subforumExists:<br />
+    Subforum Name: <input type="text" id="subforumNameSubforumExists"><br />
+    <button type="button" id="subforumExistsButton" onclick="ajaxSubforumExists(callbackSubforumExists, document.getElementById('subforumNameSubforumExists').value)">SUBFORUM EXISTS</button>
+    <p id="subforumExistsOutput"></p>
+  </section>
+
+  <section id="getSubforumByName" style="display:none">
+    getSubforumByName:<br />
+    Subforum Name: <input type="text" id="subforumNameGetSubforumByName"><br />
+    <button type="button" id="getSubforumByNameButton" onclick="ajaxGetSubforumByName(callbackGetSubforumByName, document.getElementById('subforumNameGetSubforumByName').value)">GET SUBFORUM BY NAME</button>
+    <p id="getSubforumByNameOutput"></p>
+  </section>
+
+  <section id="getSubSettingsByName" style="display:none">
+    getSubSettingsByName:<br />
+    Subforum Name: <input type="text" id="subforumNameGetSubSettingsByName"><br />
+    <button type="button" id="getSubSettingsByNameButton" onclick="ajaxGetSubforumSettingsByName(callbackGetSubSettingsByName, document.getElementById('subforumNameGetSubSettingsByName').value)">GET SUB SETTINGS</button>
+    <p id="getSubSettingsByNameOutput"></p>
+  </section>
+</section>
+
+
+
+
+<section id="postForms" style="display:none">
+  <section id="createPost" style="display:block">
+    createPost:<br />
+    Username: <input type="text" id="usernameCreatePost"><br />
+    Subforum Name: <input type="text" id="subforumNameCreatePost"><br />
+    Title: <input type="text" id="titleCreatePost"><br />
+    Content: <input type="text" id="contentCreatePost"><br />
+    <button type="button" id="createPostButton" onclick="ajaxCreatePost(callbackCreatePost, document.getElementById('usernameCreatePost').value, document.getElementById('subforumNameCreatePost').value, document.getElementById('titleCreatePost').value, document.getElementById('contentCreatePost').value)">CREATE POST</button>
+    <p id="createPostOutput"></p>
+  </section>
+
+  <section id="updateTitle" style="display:none">
+    updateTitle:<br />
+    Post Id: <input type="text" id="idUpdateTitle"><br />
+    Title: <input type="text" id="titleUpdateTitle"><br />
+    Username: <input type="text" id="usernameUpdateTitle"><br />
+    <button type="button" id="updateTitleButton" onclick="ajaxUpdatePostTitle(callbackUpdatePostTitle, document.getElementById('idUpdateTitle').value, document.getElementById('titleUpdateTitle').value, document.getElementById('usernameUpdateTitle').value)">TITLE UPDATE</button>
+    <p id="updateTitleOutput"></p>
+  </section>
+
+  <section id="updatePostContent" style="display:none">
+    updatePostContent:<br />
+    Post Id: <input type="text" id="idUpdatePostContent"><br />
+    Content: <input type="text" id="contentUpdatePostContent"><br />
+    Username: <input type="text" id="usernameUpdatePostContent"><br />
+    <button type="button" id="updatePostContentButton" onclick="ajaxUpdatePostContent(callbackUpdatePostContent, document.getElementById('idUpdatePostContent').value, document.getElementById('contentUpdatePostContent').value, document.getElementById('usernameUpdatePostContent').value)">POST CONTENT UPDATE</button>
+    <p id="updatePostContentOutput"></p>
+  </section>
+
+  <section id="upvotePost" style="display:none">
+    upvotePost:<br />
+    Post Id: <input type="text" id="postIdUpvotePost"><br />
+    Username: <input type="text" id="usernameUpvotePost"><br />
+    <button type="button" id="upvotePostButton" onclick="ajaxUpvotePost(callbackUpvotePost, document.getElementById('postIdUpvotePost').value, document.getElementById('usernameUpvotePost').value)">UPVOTE POST</button>
+    <p id="upvotePostOutput"></p>
+  </section>
+
+  <section id="downvotePost" style="display:none">
+    downvotePost:<br />
+    Post Id: <input type="text" id="postIdDownvotePost"><br />
+    Username: <input type="text" id="usernameDownvotePost"><br />
+    <button type="button" id="downvotePostButton" onclick="ajaxDownvotePost(callbackDownvotePost, document.getElementById('postIdDownvotePost').value, document.getElementById('usernameDownvotePost').value)">DOWNVOTE POST</button>
+    <p id="downvotePostOutput"></p>
+  </section>
+
+  <section id="removevotePost" style="display:none">
+    removevotePost:<br />
+    Post Id: <input type="text" id="postIdRemoveVotePost"><br />
+    Username: <input type="text" id="usernameRemoveVotePost"><br />
+    <button type="button" id="removeVotePostButton" onclick="ajaxRemoveVotePost(callbackRemoveVotePost, document.getElementById('postIdRemoveVotePost').value, document.getElementById('usernameRemoveVotePost').value)">REMOVE VOTE POST</button>
+    <p id="removeVotePostOutput"></p>
+  </section>
+
+  <section id="removeUserFromPost" style="display:none">
+    removeUserFromPost:<br />
+    Post Id: <input type="text" id="postIdRemoveUserFromPost"><br />
+    Username: <input type="text" id="usernameRemoveUserFromPost"><br />
+    <button type="button" id="removeUserFromPostButton" onclick="ajaxRemoveUserOnPost(callbackRemoveUserFromPost, document.getElementById('postIdRemoveUserFromPost').value, document.getElementById('usernameRemoveUserFromPost').value)">REMOVE USER FROM POST</button>
+    <p id="removeUserFromPostOutput"></p>
+  </section>
+
+  <section id="getPostsBySubforumPaged" style="display:none">
+    getPostsBySubforumPaged:<br />
+    Subforum Name: <input type="text" id="subforumNameGetPostsBySubforumPaged"><br />
+    Start: <input type="text" id="startGetPostsBySubforumPaged"><br />
+    Return Count: <input type="text" id="returnCountGetPostsBySubforumPaged"><br />
+    By Username: <input type="text" id="byUsernameGetPostsBySubforumPaged"><br />
+    <button type="button" id="getPostsBySubforumPagedButton" onclick="ajaxGetPostsBySubforumPaged(callbackGetBySubforumPaged, document.getElementById('subforumNameGetPostsBySubforumPaged').value, document.getElementById('startGetPostsBySubforumPaged').value, document.getElementById('returnCountGetPostsBySubforumPaged').value, document.getElementById('byUsernameGetPostsBySubforumPaged').value)">GET POSTS BY SUBFORUM PAGED</button>
+    <p id="getPostsBySubforumPagedOutput"></p>
+  </section>
+
+  <section id="getPostCountBySubforum" style="display:none">
+    getPostCountBySubforum:<br />
+    Subforum Name: <input type="text" id="subforumNameGetPostCountBySubforum"><br />
+    By Username: <input type="text" id="byUsernameGetPostCountBySubforum"><br />
+    <button type="button" id="getPostCountBySubforumButton" onclick="ajaxGetPostCountBySubforum(callbackGetCountBySubforum, document.getElementById('subforumNameGetPostCountBySubforum').value, document.getElementById('byUsernameGetPostCountBySubforum').value)">GET POST COUNT BY SUBFORUM</button>
+    <p id="getPostCountBySubforumOutput"></p>
+  </section>
+
+  <section id="getPostsByUser" style="display:none">
+    getPostsByUser:<br />
+    Username: <input type="text" id="usernameGetPostsByUser"><br />
+    Start: <input type="text" id="startGetPostsByUser"><br />
+    Return Count: <input type="text" id="returnCountGetPostsByUser"><br />
+    <button type="button" id="getPostsByUserButton" onclick="ajaxGetPostsByUserPaged(callbackGetPostsByUserPaged, document.getElementById('usernameGetPostsByUser').value, document.getElementById('startGetPostsByUser').value, document.getElementById('returnCountGetPostsByUser').value)">GET POSTS BY USER</button>
+    <p id="getPostsByUserOutput"></p>
+  </section>
+
+  <section id="getPostCountByUser" style="display:none">
+    getPostCountByUser:<br />
+    Username: <input type="text" id="usernameGetPostCountByUser"><br />
+    <button type="button" id="getPostCountByUserButton" onclick="ajaxGetPostCountByUser(callbackGetPostCountByUser, document.getElementById('usernameGetPostCountByUser').value)">GET POST COUNT BY USER</button>
+    <p id="getPostCountByUserOutput"></p>
+  </section>
+
+  <section id="getForUserSubscribedPaged" style="display:none">
+    getForUserSubscribedPaged:<br />
+    Username: <input type="text" id="usernameGetForUserSubscribedPaged"><br />
+    Start: <input type="text" id="startGetForUserSubscribedPaged"><br />
+    Return Count: <input type="text" id="returnCountGetForUserSubscribedPaged"><br />
+    <button type="button" id="getForUserSubscribedPagedButton" onclick="ajaxGetPostsForUserSubscribedPaged(callbackGetForUserSubscribedPaged, document.getElementById('usernameGetForUserSubscribedPaged').value, document.getElementById('startGetForUserSubscribedPaged').value, document.getElementById('returnCountGetForUserSubscribedPaged').value)">GET FOR USER SUBSCRIBED PAGED</button>
+    <p id="getForUserSubscribedPagedOutput"></p>
+  </section>
+
+  <section id="getCountForUserSubscribed" style="display:none">
+    getCountForUserSubscribed:<br />
+    Username: <input type="text" id="usernameGetCountForUserSubscribed"><br />
+    <button type="button" id="getCountForUserSubscribedButton" onclick="ajaxGetPostsCountForUserSubscribed(callbackGetCountForUserSubscribed, document.getElementById('usernameGetCountForUserSubscribed').value)">GET COUNT FOR USER SUBSCRIBED</button>
+    <p id="getCountForUserSubscribedOutput"></p>
+  </section>
+
+  <section id="getPostById" style="display:none">
+    getPostById:<br />
+    Post Id: <input type="text" id="idGetPostById"><br />
+    <button type="button" id="getPostByIdButton" onclick="ajaxGetPostById(callbackGetPostById, document.getElementById('idGetPostById').value)">GET POST BY ID</button>
+    <p id="getPostByIdOutput"></p>
+  </section>
+</section>
+
+
+
+
+<section id="commentForms" style="display:none">
+  <section id="createComment" style="display:block">
+    createComment:<br />
+    Username: <input type="text" id="usernameCreateComment"><br />
+    Post Id: <input type="text" id="postIdCreateComment"><br />
+    Subforum Name: <input type="text" id="subforumNameCreateComment"><br />
+    Content: <input type="text" id="contentCreateComment"><br />
+    Parent Comment Id: <input type="text" id="parrentCommentIdCreateComment"><br />
+    <button type="button" id="createCommentButton" onclick="ajaxCreateComment(callbackCreateComment, document.getElementById('usernameCreateComment').value, document.getElementById('postIdCreateComment').value, document.getElementById('subforumNameCreateComment').value, document.getElementById('contentCreateComment').value, document.getElementById('parrentCommentIdCreateComment').value)">CREATE COMMENT</button>
+    <p id="createCommentOutput"></p>
+  </section>
+
+  <section id="hasReadComment" style="display:none">
+    hasReadComment:<br />
+    Comment Id: <input type="text" id="idHasReadComment"><br />
+    Username: <input type="text" id="usernameHasReadComment"><br />
+    <button type="button" id="hasReadCommentButton" onclick="ajaxHasReadComment(callbackHasReadComment, document.getElementById('idHasReadComment').value, document.getElementById('usernameHasReadComment').value)">HAS READ COMMENT</button>
+    <p id="hasReadCommentOutput"></p>
+  </section>
+
+  <section id="updateCommentContent" style="display:none">
+    updateCommentContent:<br />
+    Comment Id: <input type="text" id="idUpdateCommentContent"><br />
+    Content: <input type="text" id="contentUpdateCommentContent"><br />
+    Username: <input type="text" id="usernameUpdateCommentContent"><br />
+    <button type="button" id="updateCommentContentButton" onclick="ajaxUpdateCommentContent(callbackUpdateCommentContent, document.getElementById('idUpdateCommentContent').value, document.getElementById('contentUpdateCommentContent').value, document.getElementById('usernameUpdateCommentContent').value)">UPDATE COMMENT CONTENT</button>
+    <p id="updateCommentContentOutput"></p>
+  </section>
+
+  <section id="upvoteComment" style="display:none">
+    upvoteComment:<br />
+    Comment Id: <input type="text" id="commentIdUpvoteComment"><br />
+    Username: <input type="text" id="usernameUpvoteComment"><br />
+    <button type="button" id="upvoteCommentButton" onclick="ajaxUpvoteComment(callbackUpvoteComment, document.getElementById('commentIdUpvoteComment').value, document.getElementById('usernameUpvoteComment').value)">UPVOTE COMMENT</button>
+    <p id="upvoteCommentOutput"></p>
+  </section>
+
+  <section id="downvoteComment" style="display:none">
+    downvoteComment:<br />
+    Comment Id: <input type="text" id="commentIdDownvoteComment"><br />
+    Username: <input type="text" id="usernameDownvoteComment"><br />
+    <button type="button" id="downvoteCommentButton" onclick="ajaxDownvoteComment(callbackDownvoteComment, document.getElementById('commentIdDownvoteComment').value, document.getElementById('usernameDownvoteComment').value)">DOWNVOTE COMMENT</button>
+    <p id="downvoteCommentOutput"></p>
+  </section>
+
+  <section id="removeVoteComment" style="display:none">
+    removeVoteComment:<br />
+    Comment Id: <input type="text" id="commentIdRemoveVoteComment"><br />
+    Username: <input type="text" id="usernameRemoveVoteComment"><br />
+    <button type="button" id="removeVoteCommentButton" onclick="ajaxRemoveVoteComment(callbackRemoveVoteComment, document.getElementById('commentIdRemoveVoteComment').value, document.getElementById('usernameRemoveVoteComment').value)">REMOVE VOTE COMMENT</button>
+    <p id="removeVoteCommentOutput"></p>
+  </section>
+
+  <section id="removeUserFromComment" style="display:none">
+    removeUserFromComment:<br />
+    Comment Id: <input type="text" id="commentIdRemoveUserFromComment"><br />
+    Username: <input type="text" id="usernameRemoveUserFromComment"><br />
+    <button type="button" id="removeUserFromCommentButton" onclick="ajaxRemoveUserFromComment(callbackRemoveUserFromComment, document.getElementById('commentIdRemoveUserFromComment').value, document.getElementById('usernameRemoveUserFromComment').value)">REMOVE USER FROM COMMENT</button>
+    <p id="removeUserFromCommentOutput"></p>
+  </section>
+
+  <section id="getCommentById" style="display:none">
+    getCommentById:<br />
+    Comment Id: <input type="text" id="commentIdGetCommentById"><br />
+    <button type="button" id="getCommentByIdButton" onclick="ajaxGetCommentById(callbackGetCommentById, document.getElementById('commentIdGetCommentById').value)">GET COMMENT BY ID</button>
+    <p id="getCommentByIdOutput"></p>
+  </section>
+
+  <section id="getCommentByUserPaged" style="display:none">
+    getCommentByUserPaged:<br />
+    Username: <input type="text" id="usernameGetCommentByUserPaged"><br />
+    Start: <input type="text" id="startGetCommentByUserPaged"><br />
+    Return Count: <input type="text" id="returnCountGetCommentByUserPaged"><br />
+    <button type="button" id="getCommentByUserPagedButton" onclick="ajaxGetCommentsByUserPaged(callbackGetCommentByUserPaged, document.getElementById('usernameGetCommentByUserPaged').value, document.getElementById('startGetCommentByUserPaged').value, document.getElementById('returnCountGetCommentByUserPaged').value)">GET COMMENT BY USER PAGED</button>
+    <p id="getCommentByUserPagedOutput"></p>
+  </section>
+
+  <section id="getCommentCountByUser" style="display:none">
+    getCommentCountByUser:<br />
+    Username: <input type="text" id="usernameGetCommentCountByUser"><br />
+    <button type="button" id="getCommentCountByUserButton" onclick="ajaxGetCommentCountByUser(callbackGetCommentCountByUser, document.getElementById('usernameGetCommentCountByUser').value)">GET COMMENT COUNT BY USER</button>
+    <p id="getCommentCountByUserOutput"></p>
+  </section>
+
+  <section id="getCommentsByPost" style="display:none">
+    getCommentsByPost:<br />
+    Post Id: <input type="text" id="idGetCommentsByPost"><br />
+    Requesting Username: <input type="text" id="requestingUsernameGetCommentsByPost"><br />
+    Start: <input type="text" id="startGetCommentsByPost"><br />
+    Return Count: <input type="text" id="returnCountGetCommentsByPost"><br />
+    Depth: <input type="text" id="depthGetCommentsByPost"><br />
+    <button type="button" id="getCommentsByPostButton" onclick="ajaxGetCommentsByPost(callbackGetCommentsByPostPaged, document.getElementById('idGetCommentsByPost').value, document.getElementById('requestingUsernameGetCommentsByPost').value, document.getElementById('startGetCommentsByPost').value, document.getElementById('returnCountGetCommentsByPost').value, document.getElementById('depthGetCommentsByPost').value)">GET COMMENTS BY POST</button>
+    <p id="getCommentsByPostOutput"></p>
+  </section>
+
+  <section id="getCommentCountByPost" style="display:none">
+    getCommentCountByPost:<br />
+    Post Id: <input type="text" id="idGetCommentCountByPost"><br />
+    Requesting Username: <input type="text" id="requestingUsernameGetCommentCountByPost"><br />
+    <button type="button" id="getCommentCountByPostButton" onclick="ajaxGetCommentCountByPost(callbackGetCommentCountByPost, document.getElementById('idGetCommentCountByPost').value, document.getElementById('requestingUsernameGetCommentCountByPost').value)">GET COMMENT COUNT BY POST</button>
+    <p id="getCommentCountByPostOutput"></p>
+  </section>
+
+  <section id="getCommentChildren" style="display:none">
+    getCommentChildren:<br />
+    Comment Id: <input type="text" id="idGetCommentChildren"><br />
+    Requesting Username: <input type="text" id="requestingUsernameGetCommentChildren"><br />
+    Start: <input type="text" id="startGetCommentChildren"><br />
+    Return Count: <input type="text" id="returnCountGetCommentChildren"><br />
+    Depth: <input type="text" id="depthGetCommentChildren"><br />
+    <button type="button" id="getCommentChildrenButton" onclick="ajaxGetChildrenOfComment(callbackGetCommentChildrenOf, document.getElementById('idGetCommentChildren').value, document.getElementById('requestingUsernameGetCommentChildren').value, document.getElementById('startGetCommentChildren').value, document.getElementById('returnCountGetCommentChildren').value, document.getElementById('depthGetCommentChildren').value)">GET COMMENT CHILDREN</button>
+    <p id="getCommentChildrenOutput"></p>
+  </section>
+
+  <section id="getCommentChildrenCount" style="display:none">
+    getCommentChildrenCount:<br />
+    Comment Id: <input type="text" id="idGetCommentChildrenCount"><br />
+    Requesting Username: <input type="text" id="requestingUsernameGetCommentChildrenCount"><br />
+    <button type="button" id="getCommentChildrenCountButton" onclick="ajaxGetCommentChildrenCount(callbackGetCommentCountChildrenOf, document.getElementById('idGetCommentChildrenCount').value, document.getElementById('requestingUsernameGetCommentChildrenCount').value)">GET COMMENT CHILDREN COUNT</button>
+    <p id="getCommentChildrenCountOutput"></p>
+  </section>
+</section>
+
+------------------------------------------------------
+<script>
+
+function changeMainDropdown() {
+  let valueSelected = document.getElementById('mainDropdown').value;
+  if (valueSelected === "users") {
+    clearDropdownsAndForms();
+    document.getElementById("usersDropdown").style.display="block";
+    document.getElementById("usersForms").style.display="block";
+  }
+  if (valueSelected === "messaging") {
+    clearDropdownsAndForms();
+    document.getElementById("messagingDropdown").style.display="block";
+    document.getElementById("messagingForms").style.display="block";
+  }
+  if (valueSelected === "subforums") {
+    clearDropdownsAndForms();
+    document.getElementById("subforumDropdown").style.display = "block";
+    document.getElementById("subforumForms").style.display="block";
+  }
+  if (valueSelected === "posts") {
+    clearDropdownsAndForms();
+    document.getElementById("postDropdown").style.display = "block";
+    document.getElementById("postForms").style.display="block";
+  }
+  if (valueSelected === "comments") {
+    clearDropdownsAndForms();
+    document.getElementById("commentDropdown").style.display = "block";
+    document.getElementById("commentForms").style.display="block";
+  }
+}
+
+function clearDropdownsAndForms() {
+  document.getElementById("usersDropdown").style.display = "none";
+  document.getElementById("messagingDropdown").style.display = "none";
+  document.getElementById("subforumDropdown").style.display = "none";
+  document.getElementById("postDropdown").style.display = "none";
+  document.getElementById("commentDropdown").style.display = "none";
+
+  document.getElementById("usersForms").style.display="none";
+  document.getElementById("messagingForms").style.display="none";
+  document.getElementById("subforumForms").style.display="none";
+  document.getElementById("postForms").style.display="none";
+  document.getElementById("commentForms").style.display="none";
+}
+
+function changeUsersDropdown() {
+  let valueSelected = document.getElementById('usersDropdown').value;
+  clearUsersSections();
+  document.getElementById(valueSelected).style.display = "block";
+}
+
+function clearUsersSections() {
+  document.getElementById("createUser").style.display = "none";
+  document.getElementById("login").style.display = "none";
+  document.getElementById("logout").style.display = "none";
+  document.getElementById("changePassword").style.display = "none";
+  document.getElementById("resetPassword").style.display = "none";
+  document.getElementById("updateDisplayName").style.display = "none";
+  document.getElementById("updateEmail").style.display = "none";
+  document.getElementById("getInfo").style.display = "none";
+  document.getElementById("getQs").style.display = "none";
+  document.getElementById("updateQs").style.display = "none";
+  document.getElementById("delete").style.display = "none";
+}
+
+function changeMessagingDropdown() {
+  let valueSelected = document.getElementById('messagingDropdown').value;
+  clearMessagingSections();
+  document.getElementById(valueSelected).style.display = "block";
+}
+
+function clearMessagingSections() {
+  document.getElementById("startConversation").style.display = "none";
+  document.getElementById("replyMessage").style.display = "none";
+  document.getElementById("getConversationsPaged").style.display = "none";
+  document.getElementById("hideByUser").style.display = "none";
+  document.getElementById("hasReadMessage").style.display = "none";
+  document.getElementById("updateSettings").style.display = "none";
+  document.getElementById("addFilter").style.display = "none";
+  document.getElementById("removeFilter").style.display = "none";
+  document.getElementById("getSettings").style.display = "none";
+  document.getElementById("getFilters").style.display = "none";
+  document.getElementById("getNotifications").style.display = "none";
+  document.getElementById("getConversationCount").style.display = "none";
+}
+
+function changeSubforumDropdown() {
+  let valueSelected = document.getElementById('subforumDropdown').value;
+  clearSubforumsSections();
+  document.getElementById(valueSelected).style.display = "block";
+}
+
+function clearSubforumsSections() {
+  document.getElementById("createSubforum").style.display = "none";
+  document.getElementById("updateDescription").style.display = "none";
+  document.getElementById("updateFlair").style.display = "none";
+  document.getElementById("updateRules").style.display = "none";
+  document.getElementById("subscribe").style.display = "none";
+  document.getElementById("unsubscribe").style.display = "none";
+  document.getElementById("addMod").style.display = "none";
+  document.getElementById("removeMod").style.display = "none";
+  document.getElementById("isMod").style.display = "none";
+  document.getElementById("isSubscribed").style.display = "none";
+  document.getElementById("getSubscriptionsByUser").style.display = "none";
+  document.getElementById("getSubforumsPaged").style.display = "none";
+  document.getElementById("getSubforumCount").style.display = "none";
+  document.getElementById("getModsBySubforumOrdered").style.display = "none";
+  document.getElementById("subforumExists").style.display = "none";
+  document.getElementById("getSubforumByName").style.display = "none";
+  document.getElementById("getSubSettingsByName").style.display = "none";
+}
+
+function changePostDropdown() {
+  let valueSelected = document.getElementById('postDropdown').value;
+  clearPostsSections();
+  document.getElementById(valueSelected).style.display = "block";
+}
+
+function clearPostsSections() {
+  document.getElementById("createPost").style.display = "none";
+  document.getElementById("updateTitle").style.display = "none";
+  document.getElementById("updatePostContent").style.display = "none";
+  document.getElementById("upvotePost").style.display = "none";
+  document.getElementById("downvotePost").style.display = "none";
+  document.getElementById("removevotePost").style.display = "none";
+  document.getElementById("removeUserFromPost").style.display = "none";
+  document.getElementById("getPostsBySubforumPaged").style.display = "none";
+  document.getElementById("getPostCountBySubforum").style.display = "none";
+  document.getElementById("getPostsByUser").style.display = "none";
+  document.getElementById("getPostCountByUser").style.display = "none";
+  document.getElementById("getForUserSubscribedPaged").style.display = "none";
+  document.getElementById("getCountForUserSubscribed").style.display = "none";
+  document.getElementById("getPostById").style.display = "none";
+}
+
+function changeCommentDropdown() {
+  let valueSelected = document.getElementById('commentDropdown').value;
+  clearCommentsSections();
+  document.getElementById(valueSelected).style.display = "block";
+}
+
+function clearCommentsSections() {
+  document.getElementById("createComment").style.display = "none";
+  document.getElementById("hasReadComment").style.display = "none";
+  document.getElementById("updateCommentContent").style.display = "none";
+  document.getElementById("upvoteComment").style.display = "none";
+  document.getElementById("downvoteComment").style.display = "none";
+  document.getElementById("removeVoteComment").style.display = "none";
+  document.getElementById("removeUserFromComment").style.display = "none";
+  document.getElementById("getCommentById").style.display = "none";
+  document.getElementById("getCommentByUserPaged").style.display = "none";
+  document.getElementById("getCommentCountByUser").style.display = "none";
+  document.getElementById("getCommentsByPost").style.display = "none";
+  document.getElementById("getCommentCountByPost").style.display = "none";
+  document.getElementById("getCommentChildren").style.display = "none";
+  document.getElementById("getCommentChildrenCount").style.display = "none";
+}
+
+
+
+</script>
+</body>
+</html>

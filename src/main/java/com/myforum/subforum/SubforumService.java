@@ -9,6 +9,8 @@ import com.myforum.login.repositories.UserRepo;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.myforum.util.Validator;
+
 public class SubforumService implements SubforumInterface {
 
   public SubforumService() {  }
@@ -53,15 +55,25 @@ public class SubforumService implements SubforumInterface {
       throw new NullPointerException();
     }
 
+    if(!Validator.validateSubforumName(name)) {
+      throw new IllegalArgumentException("Invalid Subforum Name");
+    } else if (!Validator.validateDescription(description)) {
+      throw new IllegalArgumentException("Invalid Description");
+    } else if (!Validator.validateFlair(flair)) {
+      throw new IllegalArgumentException("Invalid Flair");
+    } else if (!Validator.validateRules(subforumRules)) {
+      throw new IllegalArgumentException("Invalid Rules");
+    }
+
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     SubforumEntity tempSubforum = subforumRepo.getByName(name);
     if(!(tempSubforum == null)) {
-      throw new IllegalArgumentException("Subforum name taken");
+      throw new IllegalArgumentException("Subforum Name Taken");
     }
 
     SubforumEntity subforum = new SubforumEntity(name, description, flair, 0, Instant.now(), user);
@@ -80,10 +92,14 @@ public class SubforumService implements SubforumInterface {
       throw new NullPointerException();
     }
 
+    if(!Validator.validateDescription(description)) {
+      throw new IllegalArgumentException("Invalid Description");
+    }
+
     SubforumEntity subforum = subforumRepo.getByName(subforumName);
 
     if(subforum == null) {
-      throw new IllegalArgumentException("No such subforum");
+      throw new IllegalArgumentException("No Such Subforum");
     }
 
     subforum.setDescription(description);
@@ -97,10 +113,14 @@ public class SubforumService implements SubforumInterface {
       throw new NullPointerException();
     }
 
+    if(!Validator.validateFlair(flair)) {
+      throw new IllegalArgumentException("Invalid Flair");
+    }
+
     SubforumEntity subforum = subforumRepo.getByName(subforumName);
 
     if(subforum == null) {
-      throw new IllegalArgumentException("No such subforum");
+      throw new IllegalArgumentException("No Such Subforum");
     }
 
     subforum.setFlair(flair);
@@ -114,10 +134,13 @@ public class SubforumService implements SubforumInterface {
       throw new NullPointerException();
     }
 
+    if(!Validator.validateRules(rules)) {
+      throw new IllegalArgumentException("Invalid Rules");
+    }
     SubforumEntity subforum = subforumRepo.getByName(subforumName);
 
     if(subforum == null) {
-      throw new IllegalArgumentException("No such subforum");
+      throw new IllegalArgumentException("No Such Subforum");
     }
 
     SubforumSettingsEntity subforumSettings = subforumSettingsRepo.getBySubforum(subforum);
@@ -135,13 +158,13 @@ public class SubforumService implements SubforumInterface {
     SubforumEntity subforum = subforumRepo.getByName(subforumName);
 
     if(subforum == null) {
-      throw new IllegalArgumentException("No such subforum");
+      throw new IllegalArgumentException("No Such Subforum");
     }
 
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     if(subscriptionRepo.getIsSubscribedByUserAndSubforum(user, subforum)) {
@@ -162,13 +185,13 @@ public class SubforumService implements SubforumInterface {
     SubforumEntity subforum = subforumRepo.getByName(subforumName);
 
     if(subforum == null) {
-      throw new IllegalArgumentException("No such subforum");
+      throw new IllegalArgumentException("No Such Subforum");
     }
 
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     List<SubscriptionEntity> subscriptions = subscriptionRepo.getByUserAndSubforum(user, subforum);
@@ -188,13 +211,13 @@ public class SubforumService implements SubforumInterface {
     SubforumEntity subforum = subforumRepo.getByName(subforumName);
 
     if(subforum == null) {
-      throw new IllegalArgumentException("No such subforum");
+      throw new IllegalArgumentException("No Such Subforum");
     }
 
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     if(modRepo.getIsModByUserAndSubforum(user, subforum)) {
@@ -215,13 +238,13 @@ public class SubforumService implements SubforumInterface {
     SubforumEntity subforum = subforumRepo.getByName(subforumName);
 
     if(subforum == null) {
-      throw new IllegalArgumentException("No such subforum");
+      throw new IllegalArgumentException("No Such Subforum");
     }
 
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     ModListEntity mod = modRepo.getByUserAndSubforum(user, subforum);
@@ -244,13 +267,13 @@ public class SubforumService implements SubforumInterface {
     SubforumEntity subforum = subforumRepo.getByName(subforumName);
 
     if(subforum == null) {
-      throw new IllegalArgumentException("No such subforum");
+      throw new IllegalArgumentException("No Such Subforum");
     }
 
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     return modRepo.getIsModByUserAndSubforum(user, subforum);
@@ -266,13 +289,13 @@ public class SubforumService implements SubforumInterface {
     SubforumEntity subforum = subforumRepo.getByName(subforumName);
 
     if(subforum == null) {
-      throw new IllegalArgumentException("No such subforum");
+      throw new IllegalArgumentException("No Such Subforum");
     }
 
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     return subscriptionRepo.getIsSubscribedByUserAndSubforum(user, subforum);
@@ -288,7 +311,7 @@ public class SubforumService implements SubforumInterface {
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     List<SubscriptionEntity> subscriptionsList = subscriptionRepo.getByUser(user);
@@ -308,7 +331,11 @@ public class SubforumService implements SubforumInterface {
 
   }
 
-  public List<SubforumDTO> getSubforumsOrderedPaginated(int start, int returnCount) {
+  public List<SubforumDTO> getSubforumsOrderedPaginated(int start, int returnCount) throws IllegalArgumentException {
+
+    if (subforumRepo.getCount() > start + returnCount) {
+      throw new IllegalArgumentException("Out of Range");
+    }
 
     List<SubforumEntity> subforumEntList = subforumRepo.getOrderedPaginated(start, returnCount);
     List<SubforumDTO> subforums = new ArrayList<SubforumDTO>();
@@ -340,7 +367,7 @@ public class SubforumService implements SubforumInterface {
     SubforumEntity subforum = subforumRepo.getByName(subforumName);
 
     if(subforum == null) {
-      throw new IllegalArgumentException("No such subforum");
+      throw new IllegalArgumentException("No Such Subforum");
     }
 
     List<ModListEntity> modEntList = modRepo.getBySubforumOrderedByRank(subforum);
@@ -373,7 +400,7 @@ public class SubforumService implements SubforumInterface {
     SubforumEntity subforumEnt = subforumRepo.getByName(subforumName);
 
     if(subforumEnt == null) {
-      throw new IllegalArgumentException("No such subforum");
+      throw new IllegalArgumentException("No Such Subforum");
     } else {
       String subCreator = "[deleted]";
       if(subforumEnt.getCreatedBy() != null) {
@@ -392,7 +419,7 @@ public class SubforumService implements SubforumInterface {
     SubforumEntity subforumEnt = subforumRepo.getByName(subforumName);
 
     if(subforumEnt == null) {
-      throw new IllegalArgumentException("No such subforum");
+      throw new IllegalArgumentException("No Such Subforum");
     } else {
       SubforumSettingsEntity subSettingsEnt = subforumSettingsRepo.getBySubforum(subforumEnt);
       SubSettingsDTO subSettings = new SubSettingsDTO(subSettingsEnt.getSubforum().getName(), subSettingsEnt.getRules());

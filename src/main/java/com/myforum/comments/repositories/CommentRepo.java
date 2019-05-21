@@ -150,15 +150,15 @@ public class CommentRepo {
     List<Number> countList;
     if(!blockAllow) {
       if(userList.isEmpty()) {
-        countList = em.createQuery("SELECT COUNT(c) FROM CommentEntity c WHERE c.parentComment IS IN (:commentList)", Number.class).setParameter("commentList", parentComment).getResultList();
+        countList = em.createQuery("SELECT COUNT(c) FROM CommentEntity c WHERE c.parentComment IN (:commentList)", Number.class).setParameter("commentList", parentComment).getResultList();
       } else {
-        countList = em.createQuery("SELECT COUNT(c) FROM CommentEntity c WHERE c.parentComment IS IN (:commentList) AND c.user NOT IN (:userList)", Number.class).setParameter("userList", userList).setParameter("commentList", parentComment).getResultList();
+        countList = em.createQuery("SELECT COUNT(c) FROM CommentEntity c WHERE c.parentComment IN (:commentList) AND c.user NOT IN (:userList)", Number.class).setParameter("userList", userList).setParameter("commentList", parentComment).getResultList();
       }
     } else {
       if(userList.isEmpty()) {
         countList = new ArrayList<Number>();
       } else {
-        countList = em.createQuery("SELECT COUNT(c) FROM CommentEntity c WHERE c.parentComment IS IN (:commentList) AND c.user IN (:userList)", Number.class).setParameter("userList", userList).setParameter("commentList", parentComment).getResultList();
+        countList = em.createQuery("SELECT COUNT(c) FROM CommentEntity c WHERE c.parentComment IN (:commentList) AND c.user IN (:userList)", Number.class).setParameter("userList", userList).setParameter("commentList", parentComment).getResultList();
       }
     }
     closeTransaction();
@@ -177,15 +177,15 @@ public class CommentRepo {
     List<CommentEntity> commentList;
     if(!blockAllow) {
       if(userList.isEmpty()) {
-        commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IS IN (:commentList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("commentList", parentComment).setFirstResult(start).setMaxResults(returnCount).getResultList();
+        commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IN (:commentList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("commentList", parentComment).setFirstResult(start).setMaxResults(returnCount).getResultList();
       } else {
-        commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IS IN (:commentList) AND c.user NOT IN (:userList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("userList", userList).setParameter("commentList", parentComment).setFirstResult(start).setMaxResults(returnCount).getResultList();
+        commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IN (:commentList) AND c.user NOT IN (:userList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("userList", userList).setParameter("commentList", parentComment).setFirstResult(start).setMaxResults(returnCount).getResultList();
       }
     } else {
       if(userList.isEmpty()) {
         commentList = new ArrayList<CommentEntity>();
       } else {
-        commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IS IN (:commentList) AND c.user IN (:userList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("userList", userList).setParameter("commentList", parentComment).setFirstResult(start).setMaxResults(returnCount).getResultList();
+        commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IN (:commentList) AND c.user IN (:userList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("userList", userList).setParameter("commentList", parentComment).setFirstResult(start).setMaxResults(returnCount).getResultList();
       }
     }
     closeTransaction();
@@ -200,15 +200,15 @@ public class CommentRepo {
     List<CommentEntity> commentList;
     if(!blockAllow) {
       if(userList.isEmpty()) {
-        commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IS IN (:commentList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("commentList", parentComment).getResultList();
+        commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IN (:commentList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("commentList", parentComment).getResultList();
       } else {
-        commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IS IN (:commentList) AND c.user NOT IN (:userList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("userList", userList).setParameter("commentList", parentComment).getResultList();
+        commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IN (:commentList) AND c.user NOT IN (:userList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("userList", userList).setParameter("commentList", parentComment).getResultList();
       }
     } else {
       if(userList.isEmpty()) {
         commentList = new ArrayList<CommentEntity>();
       } else {
-        commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IS IN (:commentList) AND c.user IN (:userList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("userList", userList).setParameter("commentList", parentComment).getResultList();
+        commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IN (:commentList) AND c.user IN (:userList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("userList", userList).setParameter("commentList", parentComment).getResultList();
       }
     }
     closeTransaction();
@@ -220,7 +220,7 @@ public class CommentRepo {
       return 0;
     }
     openTransaction();
-    List<Number> countList = em.createQuery("SELECT COUNT(c) FROM CommentEntity c WHERE c.parentComment IS IN (:commentList)", Number.class).setParameter("commentList", parentComment).getResultList();
+    List<Number> countList = em.createQuery("SELECT COUNT(c) FROM CommentEntity c WHERE c.parentComment IN (:commentList)", Number.class).setParameter("commentList", parentComment).getResultList();
     closeTransaction();
     if(countList.size() == 0) {
       return 0;
@@ -234,7 +234,7 @@ public class CommentRepo {
       return new ArrayList<CommentEntity>();
     }
     openTransaction();
-    List<CommentEntity> commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IS IN (:commentList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("commentList", parentComment).setFirstResult(start).setMaxResults(returnCount).getResultList();
+    List<CommentEntity> commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IN (:commentList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("commentList", parentComment).setFirstResult(start).setMaxResults(returnCount).getResultList();
     closeTransaction();
     return commentList;
   }
@@ -244,7 +244,7 @@ public class CommentRepo {
       return new ArrayList<CommentEntity>();
     }
     openTransaction();
-    List<CommentEntity> commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IS IN (:commentList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("commentList", parentComment).getResultList();
+    List<CommentEntity> commentList = em.createQuery("SELECT c FROM CommentEntity c WHERE c.parentComment IN (:commentList) ORDER BY c.commentDate DESC", CommentEntity.class).setParameter("commentList", parentComment).getResultList();
     closeTransaction();
     return commentList;
   }

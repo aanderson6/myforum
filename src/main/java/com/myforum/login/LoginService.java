@@ -31,6 +31,8 @@ import java.util.List;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
+import com.myforum.util.Validator;
+
 public class LoginService implements LoginInterface {
 
   UserRepo userRepo = new UserRepo();
@@ -44,6 +46,16 @@ public class LoginService implements LoginInterface {
       throw new NullPointerException();
     }
 
+    if (!Validator.validateUsername(username)) {
+      throw new IllegalArgumentException("Invalid Username");
+    } else if (!Validator.validateDisplayName(displayName)) {
+      throw new IllegalArgumentException("Invalid Display Name");
+    } else if (!Validator.validateEmail(email)) {
+      throw new IllegalArgumentException("Invalid Email");
+    } else if (!Validator.validateSHPW(password)) {
+      throw new IllegalArgumentException("Invalid Password");
+    }
+
     for(String[] sqeArr : sqeArray) {
       if(sqeArr == null) {
         throw new NullPointerException();
@@ -52,12 +64,15 @@ public class LoginService implements LoginInterface {
         if(sqe == null) {
           throw new NullPointerException();
         }
+        if (!Validator.validateSecQuestion(sqe)) {
+          throw new IllegalArgumentException("Invalid Security Info");
+        }
       }
     }
 
     UserEntity tempUser = userRepo.getByUsername(username);
     if(!(tempUser == null)) {
-      throw new IllegalArgumentException("Username taken");
+      throw new IllegalArgumentException("Username Taken");
     }
 
     UserEntity user = new UserEntity(username, shString(password), displayName, email, Instant.now(), 0, Instant.now().minusSeconds(1000));
@@ -84,7 +99,7 @@ public class LoginService implements LoginInterface {
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     if (user.getIsLocked().compareTo(Instant.now().minus(4, ChronoUnit.MINUTES)) > 0) {
@@ -122,6 +137,10 @@ public class LoginService implements LoginInterface {
       throw new NullPointerException();
     }
 
+    if (!Validator.validateSHPW(newPassword)) {
+      throw new IllegalArgumentException("Invalid Password");
+    }
+
     Boolean validated = validateCredentials(username, oldPassword);
 
     if(validated) {
@@ -140,6 +159,10 @@ public class LoginService implements LoginInterface {
       throw new NullPointerException();
     }
 
+    if (!Validator.validateSHPW(newPassword)) {
+      throw new IllegalArgumentException("Invalid Password");
+    }
+
     for(String[] sqeArr : sqeArray) {
       if(sqeArr == null) {
         throw new NullPointerException();
@@ -154,7 +177,7 @@ public class LoginService implements LoginInterface {
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     Boolean validated = false;
@@ -174,10 +197,14 @@ public class LoginService implements LoginInterface {
       throw new NullPointerException();
     }
 
+    if (!Validator.validateDisplayName(displayName)) {
+      throw new IllegalArgumentException("Invalid Display Name");
+    }
+
     UserEntity newUser = userRepo.getByUsername(username);
 
     if(newUser == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     newUser.setDisplayName(displayName);
@@ -189,10 +216,14 @@ public class LoginService implements LoginInterface {
       throw new NullPointerException();
     }
 
+    if (!Validator.validateEmail(email)) {
+      throw new IllegalArgumentException("Invalid Email");
+    }
+
     UserEntity newUser = userRepo.getByUsername(username);
 
     if(newUser == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     newUser.setEmail(email);
@@ -207,7 +238,7 @@ public class LoginService implements LoginInterface {
     UserEntity newUser = userRepo.getByUsername(username);
 
     if(newUser == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     newUser.setKarma(newUser.getKarma() + 1);
@@ -222,7 +253,7 @@ public class LoginService implements LoginInterface {
     UserEntity newUser = userRepo.getByUsername(username);
 
     if(newUser == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     newUser.setKarma(newUser.getKarma() - 1);
@@ -239,7 +270,7 @@ public class LoginService implements LoginInterface {
     UserEntity userTemp = userRepo.getByUsername(username);
 
     if(userTemp == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     UserDTO user = new UserDTO(username, userTemp.getDisplayName(), userTemp.getEmail(), userTemp.getJoinDate(), userTemp.getKarma());
@@ -255,7 +286,7 @@ public class LoginService implements LoginInterface {
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     List<SecurityQuestionEntity> sqeList = secQuestionRepo.getByUser(user);
@@ -283,6 +314,9 @@ public class LoginService implements LoginInterface {
       for(String sqe : sqeArr) {
         if(sqe == null) {
           throw new NullPointerException();
+        }
+        if (!Validator.validateSecQuestion(sqe)) {
+          throw new IllegalArgumentException("Invalid Security Info");
         }
       }
     }

@@ -18,6 +18,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.myforum.util.Validator;
+
 public class PostService implements PostInterface {
 
   public PostService() {  }
@@ -36,16 +38,22 @@ public class PostService implements PostInterface {
       throw new NullPointerException();
     }
 
+    if(!Validator.validateTitle(title)) {
+      throw new IllegalArgumentException("Invalid Title");
+    } else if(!Validator.validateContent(content)) {
+      throw new IllegalArgumentException("Invalid Content");
+    }
+
     UserEntity user = userRepo.getByUsername(username);
 
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     SubforumEntity subforum = subforumRepo.getByName(subforumName);
 
     if(subforum == null) {
-      throw new IllegalArgumentException("No such subforum");
+      throw new IllegalArgumentException("No Such Subforum");
     }
 
     PostEntity post = new PostEntity(Instant.now(), user, subforum, 0, title, content);
@@ -64,12 +72,16 @@ public class PostService implements PostInterface {
       throw new NullPointerException();
     }
 
+    if(!Validator.validateTitle(title)) {
+      throw new IllegalArgumentException("Invalid Title");
+    }
+
     PostEntity post = postRepo.getById(id);
     if(post == null) {
-      throw new IllegalArgumentException("No such post");
+      throw new IllegalArgumentException("No Such Post");
     }
     if(!post.getUser().getUsername().equals(username)) {
-      throw new IllegalStateException("Not Authorized to update Post");
+      throw new IllegalStateException("Not Authorized to Update");
     }
 
     post.setTitle(title);
@@ -83,12 +95,16 @@ public class PostService implements PostInterface {
       throw new NullPointerException();
     }
 
+    if(!Validator.validateContent(content)) {
+      throw new IllegalArgumentException("Invalid Content");
+    }
+
     PostEntity post = postRepo.getById(id);
     if(post == null) {
-      throw new IllegalArgumentException("No such post");
+      throw new IllegalArgumentException("No Such Post");
     }
     if(!post.getUser().getUsername().equals(username)) {
-      throw new IllegalStateException("Not Authorized to update Post");
+      throw new IllegalStateException("Not Authorized to Update");
     }
 
     post.setContent(content);
@@ -104,11 +120,11 @@ public class PostService implements PostInterface {
 
     PostEntity post = postRepo.getById(id);
     if(post == null) {
-      throw new IllegalArgumentException("No such post");
+      throw new IllegalArgumentException("No Such Post");
     }
     UserEntity user = userRepo.getByUsername(username);
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     if(postKarmaRepo.hasVoted(user, post)) {
@@ -155,11 +171,11 @@ public class PostService implements PostInterface {
 
     PostEntity post = postRepo.getById(id);
     if(post == null) {
-      throw new IllegalArgumentException("No such post");
+      throw new IllegalArgumentException("No Such Post");
     }
     UserEntity user = userRepo.getByUsername(username);
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     if(postKarmaRepo.hasVoted(user, post)) {
@@ -206,11 +222,11 @@ public class PostService implements PostInterface {
 
     PostEntity post = postRepo.getById(id);
     if(post == null) {
-      throw new IllegalArgumentException("No such post");
+      throw new IllegalArgumentException("No Such Post");
     }
     UserEntity user = userRepo.getByUsername(username);
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     if(postKarmaRepo.hasVoted(user, post)) {
@@ -255,15 +271,15 @@ public class PostService implements PostInterface {
 
     PostEntity post = postRepo.getById(id);
     if(post == null) {
-      throw new IllegalArgumentException("No such post");
+      throw new IllegalArgumentException("No Such Post");
     }
     UserEntity user = userRepo.getByUsername(username);
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     if(!post.getUser().getUsername().equals(username)) {
-      throw new IllegalStateException("Not Authorized to Delete Post");
+      throw new IllegalStateException("Not Authorized to Delete");
     }
 
     List<PostKarmaEntity> postKarmaList = postKarmaRepo.getByPost(post);
@@ -297,11 +313,11 @@ public class PostService implements PostInterface {
     if(byUsername != null) {
       UserEntity user = userRepo.getByUsername(byUsername);
       if(user == null) {
-        throw new IllegalArgumentException("No such user");
+        throw new IllegalArgumentException("No Such User");
       }
       SubforumEntity subforum = subforumRepo.getByName(subforumName);
       if(subforum == null) {
-        throw new IllegalArgumentException("No such subforum");
+        throw new IllegalArgumentException("No Such Subforum");
       }
       SettingsEntity settings = settingsRepo.getByUser(user);
 
@@ -339,7 +355,7 @@ public class PostService implements PostInterface {
     } else {
       SubforumEntity subforum = subforumRepo.getByName(subforumName);
       if(subforum == null) {
-        throw new IllegalArgumentException("No such subforum");
+        throw new IllegalArgumentException("No Such Subforum");
       }
 
       int count = postRepo.getCountBySubforumOrdered(subforum);
@@ -363,7 +379,7 @@ public class PostService implements PostInterface {
       if(post.getSubforum() != null) {
         subforumName2 = post.getSubforum().getName();
       }
-      postDTOList.add(new PostDTO(post.getPostedDate(), username2, subforumName2, post.getKarma(), post.getTitle(), post.getContent()));
+      postDTOList.add(new PostDTO(post.getId(), post.getPostedDate(), username2, subforumName2, post.getKarma(), post.getTitle(), post.getContent()));
     }
 
     return postDTOList;
@@ -378,7 +394,7 @@ public class PostService implements PostInterface {
 
     UserEntity user = userRepo.getByUsername(username);
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     List<PostEntity> postList = new ArrayList<>();
@@ -401,7 +417,7 @@ public class PostService implements PostInterface {
       if(post.getSubforum() != null) {
         subforumName2 = post.getSubforum().getName();
       }
-      postDTOList.add(new PostDTO(post.getPostedDate(), username2, subforumName2, post.getKarma(), post.getTitle(), post.getContent()));
+      postDTOList.add(new PostDTO(post.getId(), post.getPostedDate(), username2, subforumName2, post.getKarma(), post.getTitle(), post.getContent()));
     }
 
     return postDTOList;
@@ -415,7 +431,7 @@ public class PostService implements PostInterface {
     if(username != null) {
       UserEntity user = userRepo.getByUsername(username);
       if(user == null) {
-        throw new IllegalArgumentException("No such user");
+        throw new IllegalArgumentException("No Such User");
       }
 
       //  get subscribed list by user, then get from db by subscribed list subforum filter, ordered by date, paginated
@@ -481,7 +497,7 @@ public class PostService implements PostInterface {
       if(post.getSubforum() != null) {
         subforumName2 = post.getSubforum().getName();
       }
-      postDTOList.add(new PostDTO(post.getPostedDate(), username2, subforumName2, post.getKarma(), post.getTitle(), post.getContent()));
+      postDTOList.add(new PostDTO(post.getId(), post.getPostedDate(), username2, subforumName2, post.getKarma(), post.getTitle(), post.getContent()));
     }
 
     return postDTOList;
@@ -492,7 +508,7 @@ public class PostService implements PostInterface {
 
     PostEntity postEnt = postRepo.getById(id);
     if(postEnt == null) {
-      throw new IllegalArgumentException("No such post");
+      throw new IllegalArgumentException("No Such Post");
     }
 
     String username2 = "[deleted]";
@@ -505,7 +521,7 @@ public class PostService implements PostInterface {
       subforumName2 = postEnt.getSubforum().getName();
     }
 
-    PostDTO post = new PostDTO(postEnt.getPostedDate(), username2, subforumName2, postEnt.getKarma(), postEnt.getTitle(), postEnt.getContent());
+    PostDTO post = new PostDTO(postEnt.getId(), postEnt.getPostedDate(), username2, subforumName2, postEnt.getKarma(), postEnt.getTitle(), postEnt.getContent());
     return post;
   }
 
@@ -523,11 +539,11 @@ public class PostService implements PostInterface {
     if(byUsername != null) {
       UserEntity user = userRepo.getByUsername(byUsername);
       if(user == null) {
-        throw new IllegalArgumentException("No such user");
+        throw new IllegalArgumentException("No Such User");
       }
       SubforumEntity subforum = subforumRepo.getByName(subforumName);
       if(subforum == null) {
-        throw new IllegalArgumentException("No such subforum");
+        throw new IllegalArgumentException("No Such Subforum");
       }
       SettingsEntity settings = settingsRepo.getByUser(user);
 
@@ -555,7 +571,7 @@ public class PostService implements PostInterface {
     } else {
       SubforumEntity subforum = subforumRepo.getByName(subforumName);
       if(subforum == null) {
-        throw new IllegalArgumentException("No such subforum");
+        throw new IllegalArgumentException("No Such Subforum");
       }
 
       count = postRepo.getCountBySubforumOrdered(subforum);
@@ -573,7 +589,7 @@ public class PostService implements PostInterface {
 
     UserEntity user = userRepo.getByUsername(username);
     if(user == null) {
-      throw new IllegalArgumentException("No such user");
+      throw new IllegalArgumentException("No Such User");
     }
 
     int count = postRepo.getCountByUserOrdered(user);
@@ -588,7 +604,7 @@ public class PostService implements PostInterface {
     if(username != null) {
       UserEntity user = userRepo.getByUsername(username);
       if(user == null) {
-        throw new IllegalArgumentException("No such user");
+        throw new IllegalArgumentException("No Such User");
       }
 
       //  get subscribed list by user, then get from db by subscribed list subforum filter, ordered by date, paginated
