@@ -1,0 +1,140 @@
+#navHome {
+  grid-area: navHome;
+}
+
+#navHomeImg {
+  width: 60px;
+}
+
+#navDropdown {
+  grid-area: navDropdown;
+  margin: auto;
+  padding: 10px;
+}
+
+#navSearch {
+  grid-area: navSearch;
+}
+
+#navMessages {
+  grid-area: navMessages;
+  margin: auto 1px;
+}
+
+#navMessagesImg {
+  width: 20px;
+  padding: 7px;
+}
+
+#navMessagesImg:hover {
+  background-color: f0f0f0;
+}
+
+#navSettings {
+  grid-area: navSettings;
+  margin: auto 1px;
+}
+
+#navSettingsImg {
+  width: 20px;
+  padding: 7px;
+}
+
+#navSettingsImg:hover {
+  background-color: f0f0f0;
+}
+
+#navProfile {
+  grid-area: navProfile;
+  margin: auto 1px;
+}
+
+#navProfileImg {
+  width: 20px;
+  padding: 7px;
+}
+
+#navProfileImg:hover {
+  background-color: f0f0f0;
+}
+
+#navLogging {
+  grid-area: navLogging;
+  margin: auto;
+}
+
+#navBar {
+  display: grid;
+  text-align: center;
+  background-color: f0f0f0;
+  margin-bottom: 10px;
+  grid-template-areas:
+    "navHome"
+    "navDropdown"
+    "navSearch"
+    "navMessages"
+    "navSettings"
+    "navProfile"
+    "navLogging";
+  grid-template-rows: auto auto 0 auto auto auto auto;
+}
+
+#navDropButton {
+  background-color: #6B818C;
+  padding: 7px 10px;
+  margin: 2px;
+  border: 3px solid #62466B;
+  border-radius: 2px;
+  text-decoration: none;
+  color: #f0f0f0;
+  cursor: pointer;
+  line-height: 100%;
+}
+
+#navDropButton:hover {
+  background-color: #5C727D;
+}
+
+#navDropMenu {
+  position: absolute;
+  background-color: #f0f0f0;
+  border: 2px solid #e8e8e8;
+}
+
+.hide {
+  display: none;
+}
+
+.navDropMenuContent {
+  padding: 7px 10px;
+  width: 100%:
+}
+
+.navDropMenuContent:hover {
+  background-color: #8C93A8;
+}
+
+
+.navLoggingButtons {
+  background-color: #6B818C;
+  padding: 7px 10px;
+  margin: 2px;
+  border: 3px solid #62466B;
+  border-radius: 2px;
+  text-decoration: none;
+  color: #f0f0f0;
+  cursor: pointer;
+  line-height: 100%;
+}
+
+.navLoggingButtons:hover {
+  background-color: #5C727D;
+}
+
+@media only screen and (min-width: 480px) {
+  #navBar {
+    grid-template-areas:
+      "navHome navDropdown navSearch navMessages navSettings navProfile navLogging";
+    grid-template-columns: auto auto 1fr auto auto auto auto;
+  }
+}

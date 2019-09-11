@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/nav.css">
+    <link rel="stylesheet" type="text/css" href="css/posts.css">
+  </head>
+  <body>
+    <nav id="navBar">
+      <a id="navHome" href="#"><img id="navHomeImg" src="img/myforum_logo.png" /></a>
+      <span id="navDropdown">
+        <button id="navDropButton">Subforums</button>
+        <div id="navDropMenu" class="hide">
+          <p class="navDropMenuContent">#1</p>
+          <p class="navDropMenuContent">#2a;klsdjfaoisj</p>
+          <p class="navDropMenuContent">#3</p>
+        </div>
+      </span>
+      <span id="navSearch"></span>
+      <a id="navMessages" href="#"><img id="navMessagesImg" src="img/messages.png" alt="Messages" /></a>
+      <a id="navSettings" href="#"><img id="navSettingsImg" src="img/settings.png" alt="Settings" /></a>
+      <a id="navProfile" href="#"><img id="navProfileImg" src="img/profile.png" alt="Profile" /></a>
+      <div id="navLogging">
+        <button id="navLogin" class="navLoggingButtons"><span class="navLoggingButtonsText">Login</span></a>
+        <button id="navSignup" class="navLoggingButtons"><span class="navLoggingButtonsText">Sign Up</span></a>
+        <button id="navLogout" class="navLoggingButtons"><span class="navLoggingButtonsText">Logout</span></a>
+      </div>
+    </nav>
+    <section class="post">
+      <div class="postVoting">
+        <img src="img/upvoted.png" class="postVotes" />
+        <p class="postKarma">200</p>
+        <img src="img/downvote.png" class="postVotes" />
+      </div>
+      <div class='postSubforumPostedBy'>
+        <span class='postSubforum'><a class="postSubforumLink" href="#">Subforum Name</a></span>
+        <span class='postAuthor'> - Posted By: <a class="postAuthorLink" href="#">Author</a></span>
+      </div>
+      <span class='postPostDate'><a class="postPostLink" href="#">Posted On: 1/1/23</a></span>
+      <span class="postFlairAndTitle">
+        <span class='postFlair'>TestFlair</span>
+        <span class='postTitle'><a class="postPostLink" href="#">How do I figure out the best way to beat legend of Zelda? How much longer can I make this title before problems start to appear?</a></span>
+      </span>
+      <span class='postCommentsLink'><a class="postPostLink" href="#">0 Comments</a></span>
+      <div class='postExpand'>
+        <img src='img/expand-post.png' class='postExpandImage' />
+      </div>
+    </section>
+    <script src="js/nav.js"></script>
+</html>

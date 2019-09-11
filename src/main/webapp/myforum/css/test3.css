@@ -1,0 +1,57 @@
+@import "reset.css";
+
+nav {
+  background-color: red;
+  grid-area: nav;
+}
+
+header {
+  background-color: blue;
+  grid-area: header;
+}
+
+main {
+  background-color: yellow;
+  grid-area: main;
+}
+
+aside {
+  background-color: green;
+  grid-area: aside;
+  display: none;
+}
+
+body {
+  display: grid;
+  grid-template-columns: 15px auto 15px;
+  grid-template-areas: "nav nav nav"
+                       "header header header"
+                       ". main .";
+}
+
+@media only screen and (min-width: 480px) {
+  aside {
+    display: none;
+  }
+
+  body {
+    display: grid;
+    grid-template-columns: 15px auto 15px;
+    grid-template-areas: "nav nav nav"
+                         "header header header"
+                         ". main .";
+  }
+}
+@media only screen and (min-width: 1324px) {
+  aside {
+    display: block;
+  }
+
+  body {
+    display: grid;
+    grid-template-columns: auto 1000px 300px auto;
+    grid-template-areas: "nav nav nav nav"
+                         "header header header header"
+                         ". main aside .";
+  }
+}

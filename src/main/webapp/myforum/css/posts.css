@@ -1,0 +1,94 @@
+a {
+  text-decoration: none;
+  color: black;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+.post {
+  border: 10px solid white;
+  width: 1000px;
+  padding: 10px;
+  min-height: 75px;
+  background-color: f0f0f0;
+  display: grid;
+  grid-template-areas:
+    "postVoting postSubforumPostedBy postPostDate"
+    "postVoting postFlairAndTitle postFlairAndTitle"
+    "postVoting postCommentsLink postExpand";
+  grid-template-columns: auto auto 1fr;
+  grid-template-rows: auto 1fr auto;
+}
+
+.post:hover {
+  background-color: e0e0e0;
+}
+
+.postVoting {
+  grid-area: postVoting;
+  padding-right: 10px;
+  margin: auto;
+  text-align: center;
+}
+
+.postSubforumPostedBy {
+  grid-area: postSubforumPostedBy;
+  font-size: .8em;
+}
+
+.postPostDate {
+  grid-area: postPostDate;
+  text-align: right;
+  font-size: .8em;
+}
+
+.postFlairAndTitle {
+  grid-area: postFlairAndTitle;
+  padding: 5px 5px 5px 0px;
+}
+
+.postCommentsLink {
+  grid-area: postCommentsLink;
+  align-self: end;
+}
+
+.postVotes {
+  width: 20px;
+  text-align: center;
+}
+
+.postVotes:hover {
+  cursor: pointer;
+}
+
+.postKarma {
+  text-align: center;
+}
+
+.postSubforum {
+  font-weight: bold;
+}
+
+.postFlair {
+  background-color: #6B818C;
+  padding: 2px;
+  border: 2px solid #62466B;
+  border-radius: 2px;
+  text-decoration: none;
+  color: #f0f0f0;
+}
+
+.postTitle {
+  font-size: 1.5em;
+}
+
+.postExpand {
+  grid-area: postExpand;
+  text-align: right;
+}
+
+.postExpandImage:hover {
+  cursor: pointer;
+}

@@ -1,0 +1,165 @@
+<html>
+  <head>
+    <style>
+      html, body, div, span, applet, object, iframe,
+      h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+      a, abbr, acronym, address, big, cite, code,
+      del, dfn, em, img, ins, kbd, q, s, samp,
+      small, strike, strong, sub, sup, tt, var,
+      b, u, i, center,
+      dl, dt, dd, ol, ul, li,
+      fieldset, form, label, legend,
+      table, caption, tbody, tfoot, thead, tr, th, td,
+      article, aside, canvas, details, embed,
+      figure, figcaption, footer, header, hgroup,
+      menu, nav, output, ruby, section, summary,
+      time, mark, audio, video {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+      }
+      article, aside, details, figcaption, figure,
+      footer, header, hgroup, menu, nav, section {
+        display: block;
+      }
+      body {
+        line-height: 1;
+      }
+      ol, ul {
+        list-style: none;
+      }
+      blockquote, q {
+        quotes: none;
+      }
+      blockquote:before, blockquote:after,
+      q:before, q:after {
+        content: '';
+        content: none;
+      }
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+      #logo {
+        height: 75px;
+      }
+      nav ul li {
+        display: inline;
+        height: 75px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a><img id="logo" src="/home/aaron/Pictures/myforum_logo.png"></a></li>
+        <li><a><p>Test2</p></a></li>
+        <li><a><p>Test3</p></a></li>
+        <li><a><p>Test4</p></a></li>
+      </ul>
+    </nav>
+    <main>
+      <p>testing</p>
+    </main>
+  </body>
+</html>
+
+
+<!-- <html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.grid-container {
+  display: grid;
+  grid-template-areas: "test1"
+                       "test2"
+                       "test3"
+                       "test4";
+}
+.test1 {
+  color: blue;
+  font-size: 40px;
+  font-weight: bold;
+  grid-area: test1;
+}
+.test2 {
+  color: red;
+  font-size: 40px;
+  font-weight: bold;
+  grid-area: test2;
+}
+.test3 {
+  color: green;
+  font-size: 40px;
+  font-weight: bold;
+  grid-area: test3;
+}
+.test4 {
+  color: black;
+  font-size: 40px;
+  font-weight: bold;
+  grid-area: test4;
+}
+@media only screen and (min-width: 480px) {
+  .grid-container {
+    display: grid;
+    grid-template-areas: "test4 test3"
+                         "test2 test1";
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .grid-container {
+    display: grid;
+    grid-template-areas: "test1 test3"
+                         "test2 test4";
+  }
+}
+</style>
+</head>
+<body>
+<main class="grid-container">
+<p class="test1">hello world 1</p>
+<p class="test2">hello again! 2</p>
+<p class="test3">oooooooooommmmm 3</p>
+<p class="test4">last hello... 4</p>
+</main>
+</body>
+</html>
+
+
+<html>
+<head>
+  <style>
+    #collapser {
+      max-height: 0;
+      transition: max-height 0.2s;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+
+<body>
+
+<div>
+<h1 onclick="toggleContent()">title</h1>
+<div id="collapser"><p>this is the content that can expand/collapse</p></div>
+<div><p>this is testing space</p></div>
+<div>
+
+<script>
+function toggleContent() {
+  let content = document.getElementById("collapser");
+  if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    }
+}
+</script>
+</body>
+</html> -->
