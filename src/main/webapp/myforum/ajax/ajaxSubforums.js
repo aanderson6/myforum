@@ -25,7 +25,7 @@ function ajaxCreateSubforum(callbackFunction, username, name, description, flair
   formData.append("flair", flair);
   formData.append("subforumRules", subforumRules);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/create", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/create", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -45,7 +45,7 @@ function ajaxUpdateSubforumDescription(callbackFunction, subforumName, descripti
   formData.append("subforumName", subforumName);
   formData.append("description", description);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/updatedescription", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/updatedescription", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -63,7 +63,7 @@ function ajaxUpdateSubforumFlair(callbackFunction, subforumName, flair) {
   formData.append("subforumName", subforumName);
   formData.append("flair", flair);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/updateflair", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/updateflair", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -82,7 +82,7 @@ function ajaxUpdateSubforumRules(callbackFunction, subforumName, rules) {
   formData.append("subforumName", subforumName);
   formData.append("rules", rules);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/updaterules", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/updaterules", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -101,7 +101,7 @@ function ajaxSubscribeToSubforum(callbackFunction, username, subforumName) {
   formData.append("username", username);
   formData.append("subforumName", subforumName);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/subscribe", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/subscribe", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -121,7 +121,7 @@ function ajaxUnsubscribeFromSubforum(callbackFunction, username, subforumName) {
   formData.append("username", username);
   formData.append("subforumName", subforumName);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/unsubscribe", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/unsubscribe", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -142,7 +142,7 @@ function ajaxAddModToSubforum(callbackFunction, username, subforumName) {
   formData.append("username", username);
   formData.append("subforumName", subforumName);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/addmod", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/addmod", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -162,7 +162,7 @@ function ajaxRemoveModFromSubforum(callbackFunction, username, subforumName) {
   formData.append("username", username);
   formData.append("subforumName", subforumName);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/removemod", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/removemod", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -182,7 +182,7 @@ function ajaxIsModOfSubforum(callbackFunction, subforumName, username) {
   formData.append("subforumName", subforumName);
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/ismod", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/ismod", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -202,7 +202,7 @@ function ajaxIsSubscribedToSubforum(callbackFunction, subforumName, username) {
   formData.append("subforumName", subforumName);
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/issubscribed", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/issubscribed", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -221,7 +221,7 @@ function ajaxGetSubforumsSubscribedByUser(callbackFunction, username) {
   let formData = new FormData();
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/getsubscriptionsbyuser", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/getsubscriptionsbyuser", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -241,7 +241,7 @@ function ajaxGetSubforumsPaged(callbackFunction, start, returnCount) {
   formData.append("start", start);
   formData.append("returnCount", returnCount);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/getorderedpaginated", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/getorderedpaginated", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -257,7 +257,7 @@ function ajaxGetSubforumCount(callbackFunction) {
     }
   };
 
-  request.open("POST", "http://localhost:8080/rest/subforums/getcount", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/getcount", true);
   request.send();
 }
 
@@ -276,7 +276,7 @@ function ajaxGetModsBySubforumRankOrder(callbackFunction, subforumName) {
   let formData = new FormData();
   formData.append("subforumName", subforumName);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/getmodsorderedbyrank", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/getmodsorderedbyrank", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -295,7 +295,7 @@ function ajaxSubforumExists(callbackFunction, subforumName) {
   let formData = new FormData();
   formData.append("subforumName", subforumName);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/exists", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/exists", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -315,7 +315,7 @@ function ajaxGetSubforumByName(callbackFunction, subforumName) {
   let formData = new FormData();
   formData.append("subforumName", subforumName);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/getbyname", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/getbyname", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -334,6 +334,6 @@ function ajaxGetSubforumSettingsByName(callbackFunction, subforumName) {
   let formData = new FormData();
   formData.append("subforumName", subforumName);
 
-  request.open("POST", "http://localhost:8080/rest/subforums/getsettingsbyname", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/subforums/getsettingsbyname", true);
   request.send(urlencodeFormData(formData));
 }

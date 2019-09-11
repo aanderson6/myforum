@@ -27,7 +27,7 @@ function ajaxCreateComment(callbackFunction, username, postId, subforumName, con
     formData.append("parentCommentId", parentCommentId);
   }
 
-  request.open("POST", "http://localhost:8080/rest/comments/create", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/comments/create", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -46,7 +46,7 @@ function ajaxHasReadComment(callbackFunction, id, username) {
   formData.append("id", id);
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/comments/hasRead", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/comments/hasRead", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -66,7 +66,7 @@ function ajaxUpdateCommentContent(callbackFunction, id, content, username) {
   formData.append("content", content);
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/comments/updatecontent", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/comments/updatecontent", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -86,7 +86,7 @@ function ajaxUpvoteComment(callbackFunction, id, username) {
   formData.append("id", id);
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/comments/upvote", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/comments/upvote", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -106,7 +106,7 @@ function ajaxDownvoteComment(callbackFunction, id, username) {
   formData.append("id", id);
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/comments/downvote", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/comments/downvote", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -126,7 +126,7 @@ function ajaxRemoveVoteComment(callbackFunction, id, username) {
   formData.append("id", id);
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/comments/removevote", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/comments/removevote", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -147,7 +147,7 @@ function ajaxRemoveUserFromComment(callbackFunction, id, username) {
   formData.append("id", id);
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/comments/removeuser", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/comments/removeuser", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -166,7 +166,7 @@ function ajaxGetCommentById(callbackFunction, id) {
   let formData = new FormData();
   formData.append("id", id);
 
-  request.open("POST", "http://localhost:8080/rest/comments/getbyid", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/comments/getbyid", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -187,7 +187,7 @@ function ajaxGetCommentsByUserPaged(callbackFunction, username, start, returnCou
   formData.append("start", start);
   formData.append("returnCount", returnCount);
 
-  request.open("POST", "http://localhost:8080/rest/comments/getbyuserorderedpaginated", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/comments/getbyuserorderedpaginated", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -206,7 +206,7 @@ function ajaxGetCommentCountByUser(callbackFunction, username) {
   let formData = new FormData();
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/comments/getcountbyuser", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/comments/getcountbyuser", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -229,7 +229,7 @@ function ajaxGetCommentsByPost(callbackFunction, postId, requestingUsername, sta
   formData.append("returnCount", returnCount);
   formData.append("depth", depth);
 
-  request.open("POST", "http://localhost:8080/rest/comments/getbypost", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/comments/getbypost", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -249,7 +249,7 @@ function ajaxGetCommentCountByPost(callbackFunction, postId, requestingUsername)
   formData.append("postId", postId);
   formData.append("requestingUsername", requestingUsername);
 
-  request.open("POST", "http://localhost:8080/rest/comments/getcountbypostfiltered", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/comments/getcountbypostfiltered", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -272,7 +272,7 @@ function ajaxGetChildrenOfComment(callbackFunction, commentId, requestingUsernam
   formData.append("returnCount", returnCount);
   formData.append("depth", depth);
 
-  request.open("POST", "http://localhost:8080/rest/comments/getchildrenof", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/comments/getchildrenof", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -292,6 +292,6 @@ function ajaxGetCommentChildrenCount(callbackFunction, commentId, requestingUser
   formData.append("commentId", commentId);
   formData.append("requestingUsername", requestingUsername);
 
-  request.open("POST", "http://localhost:8080/rest/comments/getcountchildrenof", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/comments/getcountchildrenof", true);
   request.send(urlencodeFormData(formData));
 }

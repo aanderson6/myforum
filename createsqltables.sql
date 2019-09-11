@@ -1,4 +1,4 @@
---mysql -u root -p'password'
+--mysql -u admin -p'U5U7dYYQCuM09XVXDkhV'
 
 DROP DATABASE IF EXISTS MyForum;
 

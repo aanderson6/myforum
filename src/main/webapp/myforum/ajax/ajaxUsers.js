@@ -33,7 +33,7 @@ function ajaxCreateUser(callbackFunction, username, password, displayName, email
   formData.append("question3", question3);
   formData.append("answer3", answer3);
 
-  request.open("POST", "http://localhost:8080/rest/users/create", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/users/create", true);
   request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   request.send(urlencodeFormData(formData));
 }
@@ -55,7 +55,7 @@ function ajaxLogin(callbackFunction, username, password) {
   formData.append("username", username);
   formData.append("password", password);
 
-  request.open("POST", "http://localhost:8080/rest/users/login", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/users/login", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -75,7 +75,7 @@ function ajaxLogout(callbackFunction, username) {
   let formData = new FormData();
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/users/logout", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/users/logout", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -98,7 +98,7 @@ function ajaxChangePassword(callbackFunction, username, oldPassword, newPassword
   formData.append("oldPassword", oldPassword);
   formData.append("newPassword", newPassword);
 
-  request.open("POST", "http://localhost:8080/rest/users/changepassword", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/users/changepassword", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -125,7 +125,7 @@ function ajaxResetPassword(callbackFunction, username, newPassword, question1, a
   formData.append("question3", question3);
   formData.append("answer3", answer3);
 
-  request.open("POST", "http://localhost:8080/rest/users/resetpassword", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/users/resetpassword", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -145,7 +145,7 @@ function ajaxUpdateDisplayName(callbackFunction, username, displayName) {
   formData.append("username", username);
   formData.append("displayName", displayName);
 
-  request.open("POST", "http://localhost:8080/rest/users/updatedisplayname", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/users/updatedisplayname", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -165,7 +165,7 @@ function ajaxUpdateEmail(callbackFunction, username, email) {
   formData.append("username", username);
   formData.append("email", email);
 
-  request.open("POST", "http://localhost:8080/rest/users/updateemail", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/users/updateemail", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -183,7 +183,7 @@ function ajaxGetInfo(callbackFunction, username) {
   let formData = new FormData();
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/users/getinfo", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/users/getinfo", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -202,7 +202,7 @@ function ajaxGetQs(callbackFunction, username) {
   let formData = new FormData();
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/users/getqs", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/users/getqs", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -228,7 +228,7 @@ function ajaxUpdateQs(callbackFunction, username, password, question1, answer1, 
   formData.append("question3", question3);
   formData.append("answer3", answer3);
 
-  request.open("POST", "http://localhost:8080/rest/users/updateqs", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/users/updateqs", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -247,6 +247,6 @@ function ajaxDeleteUser(callbackFunction, username) {
   let formData = new FormData();
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/users/delete", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/users/delete", true);
   request.send(urlencodeFormData(formData));
 }

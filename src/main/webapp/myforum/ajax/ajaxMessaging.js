@@ -24,7 +24,7 @@ function ajaxStartConversation(callbackFunction, fromUsername, toUsernameList, s
   formData.append("subject", subject);
   formData.append("content", content);
 
-  request.open("POST", "http://localhost:8080/rest/messaging/startconversation", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/messaging/startconversation", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -46,7 +46,7 @@ function ajaxReplyMessage(callbackFunction, fromUsername, conversationId, subjec
   formData.append("subject", subject);
   formData.append("content", content);
 
-  request.open("POST", "http://localhost:8080/rest/messaging/replymessage", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/messaging/replymessage", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -67,7 +67,7 @@ function ajaxGetConversationsPaged(callbackFunction, username, start, returnCoun
   formData.append("start", start);
   formData.append("returnCount", returnCount);
 
-  request.open("POST", "http://localhost:8080/rest/messaging/getorderedconversationsrange", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/messaging/getorderedconversationsrange", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -87,7 +87,7 @@ function ajaxHideConversation(callbackFunction, username, conversationId) {
   formData.append("username", username);
   formData.append("conversationId", conversationId);
 
-  request.open("POST", "http://localhost:8080/rest/messaging/hideconversationbyuser", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/messaging/hideconversationbyuser", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -107,7 +107,7 @@ function ajaxHasReadMessage(callbackFunction, username, messageId) {
   formData.append("username", username);
   formData.append("messageId", messageId);
 
-  request.open("POST", "http://localhost:8080/rest/messaging/hasreadmessage", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/messaging/hasreadmessage", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -130,7 +130,7 @@ function ajaxUpdateUserSettings(callbackFunction, username, collapseReadMessages
   formData.append("notifyUnreadMessages", notifyUnreadMessages);
   formData.append("markReadIfOpened", markReadIfOpened);
 
-  request.open("POST", "http://localhost:8080/rest/messaging/updatesettings", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/messaging/updatesettings", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -151,7 +151,7 @@ function ajaxAddFilter(callbackFunction, username, managedUsername, blockAllow) 
   formData.append("managedUsername", managedUsername);
   formData.append("blockAllow", blockAllow);
 
-  request.open("POST", "http://localhost:8080/rest/messaging/addfilter", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/messaging/addfilter", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -172,7 +172,7 @@ function ajaxRemoveFilter(callbackFunction, username, managedUsername, blockAllo
   formData.append("managedUsername", managedUsername);
   formData.append("blockAllow", blockAllow);
 
-  request.open("POST", "http://localhost:8080/rest/messaging/removefilter", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/messaging/removefilter", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -191,7 +191,7 @@ function ajaxGetUserSettings(callbackFunction, username) {
   let formData = new FormData();
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/messaging/getsettings", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/messaging/getsettings", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -210,7 +210,7 @@ function ajaxGetFilters(callbackFunction, username) {
   let formData = new FormData();
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/messaging/getfilters", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/messaging/getfilters", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -229,7 +229,7 @@ function ajaxGetNotifications(callbackFunction, username) {
   let formData = new FormData();
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/messaging/getnotifications", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/messaging/getnotifications", true);
   request.send(urlencodeFormData(formData));
 }
 
@@ -249,6 +249,6 @@ function ajaxGetConversationCount(callbackFunction, username) {
   let formData = new FormData();
   formData.append("username", username);
 
-  request.open("POST", "http://localhost:8080/rest/messaging/getconversationcount", true);
+  request.open("POST", "http://ec2-18-220-208-15.us-east-2.compute.amazonaws.com/rest/messaging/getconversationcount", true);
   request.send(urlencodeFormData(formData));
 }
