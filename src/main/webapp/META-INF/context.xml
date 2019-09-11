@@ -7,7 +7,7 @@
         username="javauser"
         password="password"
         driverClassName="com.mysql.jdbc.Driver"
-        url="jdbc:mysql://localhost:3306/MyForum?serverTimezone=UTC"
+        url="jdbc:mysql://myforum-test-db.cputmcjd1j2n.us-east-2.rds.amazonaws.com:3306/MyForum?serverTimezone=UTC"
         maxActive="15"
         maxIdle="3"/>
 </Context>
