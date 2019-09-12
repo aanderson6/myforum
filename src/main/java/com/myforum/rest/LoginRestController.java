@@ -13,6 +13,9 @@ import javax.ws.rs.core.Context;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.io.StringWriter;
+import java.io.PrintWriter;
+
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
 public class LoginRestController {
