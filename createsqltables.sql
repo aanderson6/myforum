@@ -1,14 +1,6 @@
---mysql -u admin -p'U5U7dYYQCuM09XVXDkhV'
-
 DROP DATABASE IF EXISTS MyForum;
 
 CREATE DATABASE IF NOT EXISTS MyForum;
-
---CREATE USER 'javauser'@'localhost' IDENTIFIED BY 'password';
-
---GRANT ALL PRIVILEGES ON MyForum.* TO 'javauser'@'localhost';
-
---SYSTEM mysql -u javauser -p'password';
 
 USE MyForum;
 
